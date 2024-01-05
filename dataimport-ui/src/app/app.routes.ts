@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
-import { TemplateComponent } from '@layouts/template/template.component';
-
-
+import { TemplateComponent } from './pages/layouts/template/template.component';
 
 export const AppRoutes: Routes = [
     {
