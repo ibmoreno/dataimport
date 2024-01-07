@@ -1,0 +1,47 @@
+version: '3.6'
+
+services:
+
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    ports:
+    - "5432:5432"
+    restart: unless-stopped
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./initdb.sh:/docker-entrypoint-initdb.d/initdb.sh
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+  dataimport-ui:
+    container_name: dataimport-ui
+    image: ibmoreno/dataimport-ui:latest
+    build: ./dataimport-ui
+    depends_on:
+      - dataimport-api
+    ports:
+      - "8081:80"
+
+  dataimport-api:
+    container_name: dataimport-api
+    image: ibmoreno/dataimport-api:latest
+    build: ./dataimport-api
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    environment:
+      SERVER_PORT: 8080
+      JDBC_POSTGRES_URL: ${JDBC_POSTGRES_URL}
+      JDBC_POSTGRES_USER: ${JDBC_POSTGRES_USER}
+      JDBC_POSTGRES_PASSWORD: ${JDBC_POSTGRES_PASSWORD}
+
+volumes:
+  postgres: 
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data      
