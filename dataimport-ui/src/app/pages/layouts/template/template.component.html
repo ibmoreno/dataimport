@@ -1,0 +1,58 @@
+<td-layout>
+
+    <td-navigation-drawer 
+        avatar="assets/icons/icon_d.svg" 
+        flex 
+        sidenavTitle="dataimport." 
+        name="User System"
+        email="user@domain.com.br" 
+        navigationRoute="/home">
+
+        <div td-navigation-drawer-menu>
+            <mat-nav-list>
+                <mat-list-item tdLayoutClose>
+                    <mat-icon matListItemIcon>account_box</mat-icon>Gerenciar Conta
+                </mat-list-item>
+            </mat-nav-list>
+        </div>
+        <mat-nav-list tdNavigationDrawerMenu>
+            <mat-list-item routerLink="/home" routerLinkActive="active" tdLayoutClose>
+                <mat-icon matListItemIcon>home</mat-icon>Home
+            </mat-list-item>
+            <mat-list-item routerLink="/customers" routerLinkActive="active" tdLayoutClose>
+                <mat-icon matListItemIcon>groups</mat-icon>Clientes
+            </mat-list-item>
+            <mat-list-item tdLayoutClose>
+                <mat-icon matListItemIcon>logout</mat-icon>Sair
+            </mat-list-item>
+        </mat-nav-list>
+    </td-navigation-drawer>
+ 
+    <div td-sidenav-content class="td-layout-footer pad">
+        <span class="mat-caption">versão 1.0.0</span>
+    </div>
+
+    <td-layout-nav toolbarTitle="DATAIMPORT - controle interno />" navigationRoute="/">
+
+        <button mat-icon-button td-menu-button tdLayoutToggle>
+            <mat-icon>menu</mat-icon>
+        </button>
+
+        <div td-toolbar-content layout="row" layout-align="end center" flex>
+            <button class="overflow-visible" mat-icon-button
+                matTooltip="Sair do Data Import">
+                <mat-icon>logout</mat-icon>
+            </button>
+        </div>
+
+        <router-outlet></router-outlet>
+
+        <td-layout-footer>
+            <div class="mat-caption tc-grey-500" layout="row" layout-align="center">
+                <span class="mat-caption">Copyright &copy; 2024. Todos os direitos reservados.</span>
+            </div>
+        </td-layout-footer>
+
+    </td-layout-nav>
+
+</td-layout>

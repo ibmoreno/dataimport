@@ -1,1 +1,28 @@
-<p>customers-list works!</p>
+<td-layout-card-over>
+
+    <div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm">
+        <span class="push-left-sm push-top-sm">
+            <span class="mat-title">CLIENTES</span>
+        </span>
+        <span flex></span>
+        <td-search-box #searchBox backIcon="arrow_forward" class="push-right-sm"
+            placeholder="Pesquisa por Nome, e-mail ou CNPJ" 
+            flex>
+        </td-search-box>
+    </div>
+    <mat-divider></mat-divider>
+
+    <mat-card-actions>
+
+        <mat-paginator 
+            [length]="10" 
+            [showFirstLastButtons]="true"
+            [pageSize]="10" 
+            [pageSizeOptions]="[5, 10, 25, 50]">
+
+    </mat-paginator>
+
+
+    </mat-card-actions>
+
+</td-layout-card-over>
