@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: ${SERVER_PORT:8080}
 
 spring:
   servlet:
@@ -8,10 +8,10 @@ spring:
       max-request-size: 10MB
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/data_import
+    url: ${JDBC_POSTGRES_URL:jdbc:postgresql://localhost:5432/data_import}
     driver-class-name: org.postgresql.Driver
-    username: user_import
-    password: user_import
+    username: ${JDBC_POSTGRES_USER:user_import}
+    password: ${JDBC_POSTGRES_PASSWORD:user_import}
 
   jpa:
     hibernate:
