@@ -3,7 +3,7 @@ import { Injector } from "@angular/core";
 import { BaseEntity } from "@app/core/models/base-entity.model";
 import { PageableModel } from "@app/core/util/pageable.model";
 import { Observable, throwError } from "rxjs";
-import { map } from "rxjs/operators";
+import { first, map } from "rxjs/operators";
 
 
 export abstract class BaseResourceService<T extends BaseEntity> {
@@ -19,35 +19,34 @@ export abstract class BaseResourceService<T extends BaseEntity> {
     }
 
     getAll(): Observable<T[]> {
-        return this.http.get<T[]>(this.apiPath).pipe(
+        return this.http.get<T[]>(this.apiPath).pipe(first(),
             map(this.jsonDataToResources.bind(this))
         );
     }
 
     getPage(page: PageableModel<T>): Observable<PageableModel<T>> {
-        return this.page(new HttpParams(), this.apiPath, page);
+        return this.page(new HttpParams(), this.apiPath, page).pipe(first());
     }
 
     getById(codigo: any): Observable<T> {
         const url = `${this.apiPath}/${codigo}`;
-        return this.http.get<T>(url).pipe(
+        return this.http.get<T>(url).pipe(first(),
             map(this.jsonDataToResource.bind(this))
         );
     }
 
     create(resource: T): Observable<T> {
-        return this.http.post<T>(this.apiPath, resource).pipe(
+        return this.http.post<T>(this.apiPath, resource).pipe(first(),
             map(() => {
                 this.notifyUpdate();
-                const createdResource = this.jsonDataToResource(this)
-                return createdResource;
+                return this.jsonDataToResource(this)
             })
         );
     }
 
     update(resource: T): Observable<T> {
         const url = `${this.apiPath}/${resource.id}`;
-        return this.http.put<T>(url, resource).pipe(
+        return this.http.put<T>(url, resource).pipe(first(),
             map(() => {
                 this.notifyUpdate();
                 return resource;
@@ -57,7 +56,7 @@ export abstract class BaseResourceService<T extends BaseEntity> {
 
     delete(id: any): Observable<any> {
         const url = `${this.apiPath}/${id}`;
-        return this.http.delete<any>(url).pipe(map(() => {
+        return this.http.delete<any>(url).pipe(first(), map(() => {
             this.notifyUpdate();
             return null;
         }));
@@ -65,7 +64,7 @@ export abstract class BaseResourceService<T extends BaseEntity> {
 
     query(filter: any, apiPath = this.apiPath): Observable<T[]> {
         const options = filter ? { params: filter } : {};
-        return this.http.get<T[]>(this.apiPath, options).pipe(
+        return this.http.get<T[]>(this.apiPath, options).pipe(first(),
             map(this.jsonDataToResources.bind(this))
         );
     }
