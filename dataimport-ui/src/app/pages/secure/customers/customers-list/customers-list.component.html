@@ -1,48 +1,42 @@
 <td-layout-card-over>
 
-    <div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm">
-        <span class="push-left-sm push-top-sm">
+    <div layout="row" layout-xs="column" layout-margin layout-align="space-between center">
+        <span layout-margin>
             <span class="mat-title">{{titleForm}}</span>
         </span>
-        <span flex></span>
-        <td-search-box #searchBox backIcon="arrow_forward" class="push-right-sm"
-            placeholder="Pesquisa por Nome, e-mail ou CNPJ" 
-            [alwaysVisible]="false"
-            (searchDebounce)="searchEvent($event.toUpperCase())"
-            flex>
-        </td-search-box>
+        <span layout-margin>
+            <button mat-flat-button color="primary">Incluir Cliente</button>
+        </span>
     </div>
+    
+    <div layout="column" layout-margin layout-align="stretch">
+        <td-search-input (searchDebounce)="searchEvent($event.toUpperCase())"
+            placeholder="Pesquisa por nome, e-mail ou CNPJ"
+            flex>
+        </td-search-input>
+    </div>
+
     <mat-divider></mat-divider>
 
     <table mat-table [dataSource]="pageableModel.content" matSort (matSortChange)="sortEvent($event)" class="mat-elevation-z0">    
         <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Código</th>
-            <td mat-cell *matCellDef="let element" style="width: 80px;"  data-label="Código"> {{element.id}} </td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header fx-hide.lt-sm>CÓDIGO</th>
+            <td mat-cell *matCellDef="let element" style="width: 80px;" data-label="CÓDIGO"> {{element.id}} </td>
         </ng-container>
 
         <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
-            <td mat-cell *matCellDef="let element" data-label="Nome"> {{element.name}} </td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>NOME</th>
+            <td mat-cell *matCellDef="let element" data-label="NOME"> {{element.name}} </td>
         </ng-container>
 
         <ng-container matColumnDef="cnpj">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>CNPJ</th>
             <td mat-cell *matCellDef="let element" data-label="CNPJ"> {{element.cnpj}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="createdAt">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Cadastro</th>
-            <td mat-cell *matCellDef="let element" style="width: 180px;" data-label="Cadastro"> {{element.createdAt}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="updatedAt">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Atualizado</th>
-            <td mat-cell *matCellDef="let element" style="width: 180px;" data-label="Atualizado"> {{element.updatedAt}} </td>
-        </ng-container>
+        </ng-container>        
 
         <ng-container matColumnDef="import">
-            <th mat-header-cell *matHeaderCellDef> Importar </th>
-            <td mat-cell *matCellDef="let element" style="width: 80px;" data-label="import">
+            <th mat-header-cell *matHeaderCellDef>IMPORTAR</th>
+            <td mat-cell *matCellDef="let element" style="width: 80px;" data-label="IMPORT">
                 <a mat-icon-button [routerLink]="[element.id, 'import']" [state]="{entity: element}">
                     <mat-icon>file_upload</mat-icon>
                 </a>
@@ -50,30 +44,29 @@
         </ng-container>   
 
         <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef> Detalhe </th>
-            <td mat-cell *matCellDef="let element" style="width: 80px;" data-label="action">
+            <th mat-header-cell *matHeaderCellDef>DETALHE</th>
+            <td mat-cell *matCellDef="let element" style="width: 80px;" data-label="ACTION">
                 <a mat-icon-button [routerLink]="[element.id, 'view']" [state]="{entity: element}">
                     <mat-icon>open_in_new</mat-icon>
                 </a>
             </td>
         </ng-container>   
     
-        <tr mat-header-row *matHeaderRowDef="columns"></tr>
-        <tr mat-row *matRowDef="let row; columns: columns"></tr>
+        <tr mat-header-row *matHeaderRowDef="getDisplayColumns()"></tr>
+        <tr mat-row *matRowDef="let row; columns: getDisplayColumns();"></tr>
     
     </table>
 
-    <mat-card-actions>
+    <mat-card-actions layout-align="end center">
 
         <mat-paginator 
+            [hidePageSize]="isHandset"
             [length]="pageableModel.totalElements" 
             [showFirstLastButtons]="true"
             [pageSize]="pageableModel.size" 
             [pageSizeOptions]="pageSizeOptions"
             (page)="pageEvent($event)">
-
-    </mat-paginator>
-
+        </mat-paginator>
 
     </mat-card-actions>
 

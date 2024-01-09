@@ -15,6 +15,7 @@ import { CovalentLayoutModule } from '@covalent/core/layout';
 import { CovalentSearchModule } from '@covalent/core/search';
 import { Customers } from '../service/customers.model';
 import { CustomersService } from '../service/customers.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-customers-list',
@@ -28,6 +29,7 @@ import { CustomersService } from '../service/customers.service';
     MatCardModule, 
     MatPaginatorModule, 
     MatButtonModule, 
+    MatTooltipModule,
     MatTableModule, MatIconModule, MatSortModule, RouterModule],
     templateUrl: './customers-list.component.html',
   styleUrl: './customers-list.component.scss'
@@ -38,8 +40,13 @@ export class CustomersListComponent extends BaseResourceListComponent<Customers>
     private customersService: CustomersService,
     private injector: Injector) {
     super(injector);
-    this.columns = ['id', 'name', 'cnpj', 'createdAt', 'updatedAt', 'import', 'action'];
-
+    this.columnDefinitions = [
+      { propertyName: 'id', showHandset: false },      
+      { propertyName: 'name', showHandset: true },
+      { propertyName: 'cnpj', showHandset: false },      
+      { propertyName: 'import', showHandset: true },
+      { propertyName: 'action', showHandset: true },
+    ];
   }
 
   protected override search(searchText: string, pageableModel: PageableModel<Customers>): void {

@@ -5,7 +5,12 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { BaseEntity } from "@app/core/models/base-entity.model";
 import { PageSort, PageableModel } from "@app/core/util/pageable.model";
 import { Subscription } from "rxjs";
-import { BaseResourceService } from "../services/base-resource.service";
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+
+export interface IColumnDefinitions {
+    propertyName: string;
+    showHandset: boolean;
+}
 
 @Directive()
 export abstract class BaseResourceListComponent<T extends BaseEntity> implements OnInit, OnDestroy {
@@ -13,19 +18,22 @@ export abstract class BaseResourceListComponent<T extends BaseEntity> implements
     public pageableModel: PageableModel<T> = new PageableModel();
     public titleForm: string = '';
     public sort: PageSort;
-    public pageSizeOptions: number[] = [5, 10, 25, 30, 50, 100];
-    public columns: any[] = [];
-
+    public pageSizeOptions: number[] = [10, 25, 30, 50, 100];
+    public isHandset: boolean = false;
+    
     protected route: ActivatedRoute;
     protected router: Router;
     protected textSearch: string = '';
+    protected columnDefinitions: IColumnDefinitions[] = [];
 
+    private breakpointObserver: BreakpointObserver;
     private inscricaoResolveData: Subscription;
 
     constructor(injector: Injector) {
 
         this.route = injector.get(ActivatedRoute);
         this.router = injector.get(Router);
+        this.breakpointObserver = injector.get(BreakpointObserver);
 
         // se inscreve para pegar os dados do resolve
         this.inscricaoResolveData = this.route.data.subscribe((resolve) => {
@@ -39,6 +47,9 @@ export abstract class BaseResourceListComponent<T extends BaseEntity> implements
     }
 
     ngOnInit() {
+        this.breakpointObserver.observe(Breakpoints.Handset).subscribe(result => {
+            this.isHandset = result.matches;
+        });
     }
 
     // pagina resultado
@@ -86,6 +97,17 @@ export abstract class BaseResourceListComponent<T extends BaseEntity> implements
 
         }
 
+    }
+
+    getDisplayColumns(): string[] {
+        if (this.isHandset) {
+            return this.columnDefinitions
+                .filter((column) => column.showHandset)
+                .map((column) => column.propertyName);
+        } else {
+            return this.columnDefinitions
+                .map((column) => column.propertyName);
+        }
     }
 
     // metodo para pesquisar

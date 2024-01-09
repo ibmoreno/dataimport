@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { CustomersListComponent } from './customers-list/customers-list.component';
 import { CustomersListResolver } from './resolver/customers-list.resolver';
 import { ActionSystemModel } from '@app/core/util/action-system.model';
+import { CustomersImportComponent } from './customers-import/customers-import.component';
 
 export const CustomersRoutes: Routes = [
     { 
@@ -11,4 +12,9 @@ export const CustomersRoutes: Routes = [
         runGuardsAndResolvers: 'pathParamsOrQueryParamsChange',
         data: { currentAction: ActionSystemModel.LIST, title: 'LISTA DE CLIENTES' }
     },
+    { 
+        path: ':id/import', 
+        component: CustomersImportComponent,
+        runGuardsAndResolvers: 'pathParamsOrQueryParamsChange',
+    },    
 ];
