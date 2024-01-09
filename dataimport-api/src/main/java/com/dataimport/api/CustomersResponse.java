@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomersList {
+public class CustomersResponse {
     private Integer id;
     private String name;
     private String cnpj;
@@ -27,8 +27,8 @@ public class CustomersList {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public static CustomersList fromEntity(Customers customers) {
-        return CustomersList.builder()
+    public static CustomersResponse fromEntity(Customers customers) {
+        return CustomersResponse.builder()
                 .id(customers.getId())
                 .name(customers.getName())
                 .cnpj(customers.getCnpj())

@@ -21,6 +21,8 @@
     "@angular/platform-browser-dynamic": "^17.0.0",
     "@angular/router": "^17.0.0",
     "@covalent/core": "^8.0.0",
+    "@ngx-loading-bar/core": "^6.0.2",
+    "@ngx-loading-bar/http-client": "^6.0.2",
     "http-server": "^14.1.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

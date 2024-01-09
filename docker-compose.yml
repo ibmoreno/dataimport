@@ -22,7 +22,7 @@ services:
     depends_on:
       - dataimport-api
     ports:
-      - "8081:80"
+      - "80:80"
 
   dataimport-api:
     container_name: dataimport-api
