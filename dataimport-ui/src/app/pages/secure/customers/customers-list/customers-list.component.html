@@ -5,7 +5,7 @@
             <span class="mat-title">{{titleForm}}</span>
         </span>
         <span layout-margin>
-            <button mat-flat-button color="primary">Incluir Cliente</button>
+            <button mat-flat-button color="primary">Cadastrar</button>
         </span>
     </div>
     
@@ -18,7 +18,7 @@
 
     <mat-divider></mat-divider>
 
-    <table mat-table [dataSource]="pageableModel.content" matSort (matSortChange)="sortEvent($event)" class="mat-elevation-z0">    
+    <table mat-table [dataSource]="pageableModel.content" matSort (matSortChange)="sortEvent($event)" class="mat-elevation-z0">  
         <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef mat-sort-header fx-hide.lt-sm>CÓDIGO</th>
             <td mat-cell *matCellDef="let element" style="width: 80px;" data-label="CÓDIGO"> {{element.id}} </td>
@@ -57,7 +57,7 @@
     
     </table>
 
-    <mat-card-actions layout-align="end center">
+    <mat-card-actions flex layout-align="end center">
 
         <mat-paginator 
             [hidePageSize]="isHandset"

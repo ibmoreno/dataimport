@@ -10,7 +10,7 @@ export const CustomersRoutes: Routes = [
         component: CustomersListComponent,
         resolve: { resolverData: CustomersListResolver },
         runGuardsAndResolvers: 'pathParamsOrQueryParamsChange',
-        data: { currentAction: ActionSystemModel.LIST, title: 'LISTA DE CLIENTES' }
+        data: { currentAction: ActionSystemModel.LIST, title: 'CLIENTES' }
     },
     { 
         path: ':id/import', 

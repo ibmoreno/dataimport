@@ -23,7 +23,7 @@ export class TemplateComponent {
   ) {
 
     this.iconRegistry.addSvgIconInNamespace('assets',
-      'dataimport-logo', this.domSanitizer.bypassSecurityTrustResourceUrl('/assets/icons/dataimport.svg'));
+      'dataimport-logo', this.domSanitizer.bypassSecurityTrustResourceUrl('/assets/dataimport.svg'));
 
   }
 
