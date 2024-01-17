@@ -1,4 +1,4 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ApplicationConfig, LOCALE_ID, importProvidersFrom } from '@angular/core';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { BrowserModule } from '@angular/platform-browser';
@@ -11,7 +11,7 @@ import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(AppRoutes, withPreloading(PreloadAllModules)),
-    importProvidersFrom(BrowserModule, LoadingBarHttpClientModule),
+    importProvidersFrom(BrowserModule, LoadingBarHttpClientModule, HttpClientModule),
     provideHttpClient(withInterceptorsFromDi()),
     provideAnimations(),
     { provide: LOCALE_ID, useValue: 'pt' },

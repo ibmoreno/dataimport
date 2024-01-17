@@ -1,71 +1,88 @@
 <td-layout-card-over>
 
-    <mat-card-title>
-        <div layout="row" layout-margin layout-align="space center">
-            <span flex>
-                <span class="mat-title">IMPORTAR PLANILHA</span>
-            </span>
-        </div>
-    </mat-card-title>
-    
-    <mat-divider></mat-divider>
+    <form [formGroup]="resourceForm" (ngSubmit)="sendFile()">
 
-    <mat-card-content>
-        
-        <span class="mat-body-2">Informe o mês e ano de referência:</span>
-        <div layout="row" layout-xs="column" layout-margin>
-            <mat-form-field flex appearance="outline">
-                <mat-label>Mês</mat-label>
-                <mat-select required>
-                    <mat-option value="01">JANEIRO</mat-option>
-                    <mat-option value="02">FEVEREIRO</mat-option>
-                    <mat-option value="03">MARÇO</mat-option>
-                    <mat-option value="04">ABRIL</mat-option>
-                    <mat-option value="05">MAIO</mat-option>
-                    <mat-option value="06">JUNHO</mat-option>
-                    <mat-option value="07">JULHO</mat-option>
-                    <mat-option value="08">AGOSTO</mat-option>
-                    <mat-option value="09">SETEMBRO</mat-option>
-                    <mat-option value="10">OUTUBRO</mat-option>
-                    <mat-option value="11">NOVEMBRO</mat-option>
-                    <mat-option value="12">DEZEMBRO</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field flex appearance="outline">
-                <mat-label>Ano</mat-label>
-                <input type="text" matInput class="form-control" placeholder="Ano" required maxlength="4" />
-                <mat-hint align="end">formato AAAA</mat-hint>
-            </mat-form-field>
-        </div>
-
-
-        <span class="mat-body-2">Informe o Arquivo:</span>
-        <div layout="column" layout-xs="column" layout-margin>
-            <div class="dropzone" tdFileDrop (fileDrop)="onFileDropped($event)">
-                <img width="63" height="64" src="assets/upload-excel.svg" alt=""/>
-                <h3>Arraste e solte o aquivo aqui</h3>
-                <h3>ou</h3>
-                <td-file-input #fileInput color="primary" 
-                    (selectFile)="onFileDropped($event)"
-                    accept=".xlsx,.xls">
-                    <mat-icon>attach_file</mat-icon><span>Selecione o arquivo...</span>
-                </td-file-input>
-                <span>{{file?.name}}</span>
+        <mat-card-title>
+            <div layout="row" layout-margin layout-align="space center">
+                <span flex>
+                    <span class="mat-title">{{title}}</span>
+                </span>
             </div>
-        </div>
-
+        </mat-card-title>
         
-        
+        <mat-divider></mat-divider>
 
-    </mat-card-content>
+        <mat-card-content>
+            <span class="mat-body-2">Informe o mês e ano de referência:</span>
+            <div layout="row" layout-xs="column" layout-margin>
+                <mat-form-field flex appearance="outline">
+                    <mat-label>Meses</mat-label>
+                    <mat-select formControlName="months" required multiple>
+                        <mat-option value="01">JANEIRO</mat-option>
+                        <mat-option value="02">FEVEREIRO</mat-option>
+                        <mat-option value="03">MARÇO</mat-option>
+                        <mat-option value="04">ABRIL</mat-option>
+                        <mat-option value="05">MAIO</mat-option>
+                        <mat-option value="06">JUNHO</mat-option>
+                        <mat-option value="07">JULHO</mat-option>
+                        <mat-option value="08">AGOSTO</mat-option>
+                        <mat-option value="09">SETEMBRO</mat-option>
+                        <mat-option value="10">OUTUBRO</mat-option>
+                        <mat-option value="11">NOVEMBRO</mat-option>
+                        <mat-option value="12">DEZEMBRO</mat-option>
+                    </mat-select>
+                    <mat-error>
+                        <app-message-error [form-control]="resourceForm.get('months')"></app-message-error>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field flex appearance="outline">
+                    <mat-label>Ano</mat-label>
+                    <input type="text" formControlName="year" matInput class="form-control" placeholder="Ano" required maxlength="4" />
+                    <mat-hint align="end">formato AAAA</mat-hint>
+                    <mat-error>
+                        <app-message-error [form-control]="resourceForm.get('year')"></app-message-error>
+                    </mat-error>
+                </mat-form-field>
+            </div>
 
-    <mat-divider></mat-divider>
+            <span class="mat-body-2">Informe o Arquivo:</span>
+            <div layout="row" layout-margin>
+                
+                <div flex class="dropzone" tdFileDrop (fileDrop)="onFileDropped($event)">
+                    <img width="63" height="64" src="assets/upload-excel.svg" alt=""/>
+                    <h3>Arraste e solte o aquivo aqui</h3>
+                    <h3>ou</h3>
+                    <td-file-input #fileInput color="primary" formControlName="file" required
+                        (selectFile)="onFileDropped($event)"
+                        accept=".xlsx,.xls">
+                        <mat-icon>attach_file</mat-icon><span>Selecione o arquivo...</span>
+                    </td-file-input>
+                    
+                        <app-message-error [form-control]="resourceForm.get('file')"></app-message-error>
+                    
+                    <h3> {{ resourceForm.getError('file') }} {{file?.name}}</h3>
+                </div>
+            
+            </div>
+            <div>{{ resourceForm.errors }}</div>
+            <div layout="row" layout-margin>
+                @if (uploadProgress > 0) {
+                    <mat-progress-bar mode="determinate" [value]="uploadProgress"></mat-progress-bar>
+                }
+            </div>
+            
 
-    <mat-card-actions flex layout-align="end center">
-        <button mat-button type="submit" class="text-upper" color="accent">
-            @if (!submittingForm) { Enviar} @else { Enviando...}
-        </button>
-        <button mat-button type="button" class="text-upper" [routerLink]="[ '/customers' ]">Fechar</button>
-    </mat-card-actions>
+        </mat-card-content>
+
+        <mat-divider></mat-divider>
+
+        <mat-card-actions flex layout-align="end center">
+            <button mat-button type="submit" class="text-upper" color="accent" [disabled]="submittingForm || resourceForm.invalid">
+                @if (!submittingForm) { Enviar } @else { Enviando...}
+            </button>
+            <button mat-button type="button" class="text-upper" [routerLink]="[ '/customers' ]">Fechar</button>
+        </mat-card-actions>
+
+    </form>
 
 </td-layout-card-over>

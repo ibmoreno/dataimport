@@ -3,7 +3,7 @@ import { Injector } from "@angular/core";
 import { BaseEntity } from "@app/core/models/base-entity.model";
 import { PageableModel } from "@app/core/util/pageable.model";
 import { Observable, throwError } from "rxjs";
-import { first, map } from "rxjs/operators";
+import { finalize, first, map } from "rxjs/operators";
 
 
 export abstract class BaseResourceService<T extends BaseEntity> {
@@ -56,10 +56,7 @@ export abstract class BaseResourceService<T extends BaseEntity> {
 
     delete(id: any): Observable<any> {
         const url = `${this.apiPath}/${id}`;
-        return this.http.delete<any>(url).pipe(first(), map(() => {
-            this.notifyUpdate();
-            return null;
-        }));
+        return this.http.delete<any>(url).pipe(first(),  finalize(() => this.notifyUpdate()));
     }
 
     query(filter: any, apiPath = this.apiPath): Observable<T[]> {

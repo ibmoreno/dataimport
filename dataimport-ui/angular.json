@@ -60,9 +60,10 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "proxyConfig": "proxy.conf.json"
-          },          
+           "options": {
+             "buildTarget": "dataimport-ui:build:builder",
+             "proxyConfig": "./proxy.conf.json"
+           },          
           "configurations": {
             "production": {
               "buildTarget": "dataimport-ui:build:production"

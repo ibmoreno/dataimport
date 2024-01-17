@@ -3,6 +3,7 @@ import { CustomersListComponent } from './customers-list/customers-list.componen
 import { CustomersListResolver } from './resolver/customers-list.resolver';
 import { ActionSystemModel } from '@app/core/util/action-system.model';
 import { CustomersImportComponent } from './customers-import/customers-import.component';
+import { CustomersFormResolver } from './resolver/customers-form.resolver';
 
 export const CustomersRoutes: Routes = [
     { 
@@ -15,6 +16,7 @@ export const CustomersRoutes: Routes = [
     { 
         path: ':id/import', 
         component: CustomersImportComponent,
+        resolve: { resolverData: CustomersFormResolver },
         runGuardsAndResolvers: 'pathParamsOrQueryParamsChange',
     },    
 ];

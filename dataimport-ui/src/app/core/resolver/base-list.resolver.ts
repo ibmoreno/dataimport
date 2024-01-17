@@ -30,8 +30,7 @@ export class BaseListResolver<T extends BaseEntity> {
                     this.router.navigate(['']);
                     throw error
                 }
-            }
-            )
+            })
         });
     }
 
