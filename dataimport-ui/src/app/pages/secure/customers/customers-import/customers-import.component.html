@@ -17,19 +17,19 @@
             <div layout="row" layout-xs="column" layout-margin>
                 <mat-form-field flex appearance="outline">
                     <mat-label>Meses</mat-label>
-                    <mat-select formControlName="months" required multiple>
-                        <mat-option value="01">JANEIRO</mat-option>
-                        <mat-option value="02">FEVEREIRO</mat-option>
-                        <mat-option value="03">MARÇO</mat-option>
-                        <mat-option value="04">ABRIL</mat-option>
-                        <mat-option value="05">MAIO</mat-option>
-                        <mat-option value="06">JUNHO</mat-option>
-                        <mat-option value="07">JULHO</mat-option>
-                        <mat-option value="08">AGOSTO</mat-option>
-                        <mat-option value="09">SETEMBRO</mat-option>
-                        <mat-option value="10">OUTUBRO</mat-option>
-                        <mat-option value="11">NOVEMBRO</mat-option>
-                        <mat-option value="12">DEZEMBRO</mat-option>
+                    <mat-select formControlName="months" [compareWith]="compareMonths"  required multiple>
+                        <mat-option value=1>JANEIRO</mat-option>
+                        <mat-option value=2>FEVEREIRO</mat-option>
+                        <mat-option value=3>MARÇO</mat-option>
+                        <mat-option value=4>ABRIL</mat-option>
+                        <mat-option value=5>MAIO</mat-option>
+                        <mat-option value=6>JUNHO</mat-option>
+                        <mat-option value=7>JULHO</mat-option>
+                        <mat-option value=8>AGOSTO</mat-option>
+                        <mat-option value=9>SETEMBRO</mat-option>
+                        <mat-option value=10>OUTUBRO</mat-option>
+                        <mat-option value=11>NOVEMBRO</mat-option>
+                        <mat-option value=12>DEZEMBRO</mat-option>
                     </mat-select>
                     <mat-error>
                         <app-message-error [form-control]="resourceForm.get('months')"></app-message-error>
@@ -38,7 +38,6 @@
                 <mat-form-field flex appearance="outline">
                     <mat-label>Ano</mat-label>
                     <input type="text" formControlName="year" matInput class="form-control" placeholder="Ano" required maxlength="4" />
-                    <mat-hint align="end">formato AAAA</mat-hint>
                     <mat-error>
                         <app-message-error [form-control]="resourceForm.get('year')"></app-message-error>
                     </mat-error>
@@ -47,30 +46,27 @@
 
             <span class="mat-body-2">Informe o Arquivo:</span>
             <div layout="row" layout-margin>
-                
                 <div flex class="dropzone" tdFileDrop (fileDrop)="onFileDropped($event)">
                     <img width="63" height="64" src="assets/upload-excel.svg" alt=""/>
                     <h3>Arraste e solte o aquivo aqui</h3>
                     <h3>ou</h3>
-                    <td-file-input #fileInput color="primary" formControlName="file" required
+                    <td-file-input #fileInput color="primary"
                         (selectFile)="onFileDropped($event)"
                         accept=".xlsx,.xls">
                         <mat-icon>attach_file</mat-icon><span>Selecione o arquivo...</span>
                     </td-file-input>
-                    
-                        <app-message-error [form-control]="resourceForm.get('file')"></app-message-error>
-                    
-                    <h3> {{ resourceForm.getError('file') }} {{file?.name}}</h3>
+                    @if (resourceForm.value.file?.name) {
+                        <h3> {{ resourceForm.value.file?.name }} </h3>
+                    } @else {
+                        <h3 style="color: red">NENHUM ARQUIVO FOI SELECIONADO</h3>
+                    }
                 </div>
-            
             </div>
-            <div>{{ resourceForm.errors }}</div>
             <div layout="row" layout-margin>
                 @if (uploadProgress > 0) {
                     <mat-progress-bar mode="determinate" [value]="uploadProgress"></mat-progress-bar>
                 }
             </div>
-            
 
         </mat-card-content>
 

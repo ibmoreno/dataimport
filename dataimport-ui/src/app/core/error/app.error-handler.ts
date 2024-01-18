@@ -6,66 +6,59 @@ import { ToastrService } from "ngx-toastr";
 @Injectable({
     providedIn: 'root'
 })
-export class ApplicationErrorHandler extends ErrorHandler {
+export class ApplicationErrorHandler implements ErrorHandler {
 
-    private ms: ToastrService;
+    private ms: ToastrService | any = null;
 
     constructor(private injector: Injector, private ngZone: NgZone) {
-        super();
-        this.ms = this.injector.get(ToastrService);
+
     }
 
     /* faz tratamento de erro global no sistema */
-    override handleError(erroResponse: HttpErrorResponse | any): void {
+    handleError(error: any): void {
+
+        this.ms = this.injector.get(ToastrService);
 
         this.ngZone.run(() => {
 
-            if (erroResponse instanceof ErrorEvent) {
+            if (error instanceof ErrorEvent) {
 
                 this.ms.error('Requisição não processada. Notifique o administrador do sistema.',
                     'Erro na Requisição', { closeButton: true });
-                super.handleError(erroResponse);
+    
+            } else if (error instanceof HttpErrorResponse) {
 
-            } else if (erroResponse instanceof HttpErrorResponse) {
+                const message = (error.error && error.error.detail) ? error.error.detail : error.message;
 
-                const message = (erroResponse.error && erroResponse.error.detail) ? erroResponse.error.detail : erroResponse.message;
-
-                switch (erroResponse.status) {
+                switch (error.status) {
 
                     case 400:
                         this.ms.error(message || 'Soliticição inválida', 'Erro na requisição', { closeButton: true });
-                        super.handleError(erroResponse);
                         break;
 
                     case 401:
                         this.ms.error(message || 'Login ou Senha invalido!', 'Erro de Autenticação', { closeButton: true });
-                        super.handleError(erroResponse);
                         break;
 
                     case 403:
                         this.ms.error(message || 'Não autorizado', 'Erro na requisição', { closeButton: true });
-                        super.handleError(erroResponse);
                         break;
 
                     case 404:
-                        this.ms.error(message || 'Recurso não encontrado. Verifique o console para mais detalhes.',
-                            'Erro na requisição', { closeButton: true });
-                        super.handleError(erroResponse);
+                         this.ms.error(message || 'Recurso não encontrado. Verifique o console para mais detalhes.',
+                             'Erro na requisição', { closeButton: true });
                         break;
 
                     default:
                         this.ms.error(message || 'Erro Interno no Servidor', 'Erro na requisição', { closeButton: true });
-                        super.handleError(erroResponse);
                         break;
 
                 }
 
             } else {
 
-                this.ms.error('Requisição não processada. Notifique o administrador do sistema.',
-                    'Erro na Requisição', { closeButton: true });
-
-                super.handleError(erroResponse);
+                 this.ms.error('Requisição não processada. Notifique o administrador do sistema.',
+                     'Erro na Requisição', { closeButton: true });
 
             }
 
@@ -73,4 +66,3 @@ export class ApplicationErrorHandler extends ErrorHandler {
     }
 
 }
-    

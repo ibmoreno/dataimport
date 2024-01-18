@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
@@ -37,7 +37,7 @@ import { NoBlank } from '@app/core/validator/CustomValidators';
         MatProgressBarModule,
         MatDividerModule, 
         MatButtonModule,
-        FormFieldErrorComponent
+        FormFieldErrorComponent,
     ]
 })
 export class CustomersImportComponent {
@@ -46,7 +46,6 @@ export class CustomersImportComponent {
   protected submittingForm: boolean = false;
   protected resourceForm: FormGroup;
   protected uploadProgress: number = 0;
-  protected file: File | any;
   protected title: string = '';
 
   constructor(
@@ -59,12 +58,13 @@ export class CustomersImportComponent {
     this.resourceForm = formBuilder.group({
       customerId: [this.customers.id],
       year: [new Date().getFullYear(), { validators: [Validators.required, Validators.minLength(4), NoBlank], updateOn: 'change' }],
-      months: [[], { validators: [Validators.required], updateOn: 'change' }],
+      months: [[new Date().getMonth() + 1], { validators: [Validators.required], updateOn: 'change' }],
       file: [null, { validators: [Validators.required], updateOn: 'change' }]
     })
   }
 
   sendFile() {
+    this.submittingForm = true;
     this.customerService.uploadFile(
       this.resourceForm.value.customerId, 
       this.resourceForm.value.year, 
@@ -74,16 +74,29 @@ export class CustomersImportComponent {
           if (event.type === HttpEventType.UploadProgress) {
             this.uploadProgress = Math.round(100 * event.loaded / event.total);
           }
-        }, error: (error: any) => {
-          console.log(error);  
-        }
+        }, 
+        complete: () => {
+          this.submittingForm = false;
+          this.uploadProgress = 0;
+        },
+        error: (error: any) => {
+          this.submittingForm = false;
+          this.uploadProgress = 0;
+          throw new Error(error);
+        },
       })
   }
 
   onFileDropped(files: FileList | File) {
     if (files instanceof File) {
-      this.file = files;
+      this.resourceForm.patchValue({
+        file: files
+      })
     }
+  }
+
+  compareMonths = (o1: any, o2: any) => {
+    return o1 == o2;
   }
 
 }
