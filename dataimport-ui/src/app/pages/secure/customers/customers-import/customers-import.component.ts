@@ -3,7 +3,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CovalentLayoutModule } from '@covalent/core/layout';
 import { CovalentFileModule } from '@covalent/core/file';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,6 +17,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { HttpEventType } from '@angular/common/http';
 import { FormFieldErrorComponent } from "@core/component/form-field-error/form-field-error.component";
 import { NoBlank } from '@app/core/validator/CustomValidators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-customers-import',
@@ -51,6 +52,8 @@ export class CustomersImportComponent {
   constructor(
     protected route: ActivatedRoute,
     protected formBuilder: FormBuilder,
+    protected toastr: ToastrService,
+    protected router: Router,
     protected customerService: CustomersService,
   ) {
     this.customers = this.route.snapshot.data['resolverData'];
@@ -78,6 +81,8 @@ export class CustomersImportComponent {
         complete: () => {
           this.submittingForm = false;
           this.uploadProgress = 0;
+          this.toastr.success('Arquivo importado com sucesso!');
+          this.router.navigateByUrl('/customers');
         },
         error: (error: any) => {
           this.submittingForm = false;
