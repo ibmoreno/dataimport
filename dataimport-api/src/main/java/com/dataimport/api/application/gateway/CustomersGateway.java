@@ -13,4 +13,6 @@ public interface CustomersGateway {
     Customers save(Customers customers);
 
     void delete(Customers customers);
+
+    Page<Customers> search(String search, Pageable pageable);
 }

@@ -16,7 +16,7 @@ export class FormFieldErrorComponent {
 
   public get messageError(): string | null {
 
-      if (this.hasError()) {
+    if (this.hasError()) {
 
           if (this.formControl.hasError('required') === true) {
               return 'Campo de preenchimento obrigatório';

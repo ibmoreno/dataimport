@@ -1,6 +1,5 @@
 package com.dataimport.api.domain;
 
-import com.dataimport.api.infra.database.jpa.entity.AccountingAccountsEntity;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,5 +16,5 @@ public class MatchData {
     private Integer year;
     private List<Integer> months;
     @Builder.Default
-    private Set<AccountingAccountsEntity> accounts = new HashSet<>();
+    private Set<AccountingAccounts> accounts = new HashSet<>();
 }

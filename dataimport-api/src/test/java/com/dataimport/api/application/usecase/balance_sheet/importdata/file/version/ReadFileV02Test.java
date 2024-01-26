@@ -1,10 +1,10 @@
 package com.dataimport.api.application.usecase.balance_sheet.importdata.file.version;
 
 import com.dataimport.api.application.usecase.balance_sheet.importdata.file.ReadFile;
+import com.dataimport.api.domain.AccountingAccounts;
 import com.dataimport.api.domain.DataOutput;
 import com.dataimport.api.domain.MatchData;
 import com.dataimport.api.domain.ReadModelVersion;
-import com.dataimport.api.infra.database.jpa.entity.AccountingAccountsEntity;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
@@ -28,9 +28,9 @@ class ReadFileV02Test {
 
         try (InputStream inputStream = ReadFileV02Test.class.getResourceAsStream("/file/movement_v01.xlsx")) {
 
-            Set<AccountingAccountsEntity> accounts = new HashSet<>();
-            accounts.add(AccountingAccountsEntity.builder().id(1).description("Ativo Circulante").build());
-            accounts.add(AccountingAccountsEntity.builder().id(2).description("Caixa e Equivalentes de Caixa").build());
+            Set<AccountingAccounts> accounts = new HashSet<>();
+            accounts.add(AccountingAccounts.builder().id(1).description("Ativo Circulante").build());
+            accounts.add(AccountingAccounts.builder().id(2).description("Caixa e Equivalentes de Caixa").build());
 
             MatchData filter = MatchData.builder()
                     .year(2023)

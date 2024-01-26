@@ -1,5 +1,6 @@
 package com.dataimport.api.infra.database.jpa.entity;
 
+import com.dataimport.api.domain.AccountingAccounts;
 import com.dataimport.api.domain.Status;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -41,6 +42,16 @@ public class AccountingAccountsEntity {
     @PreUpdate
     protected void preUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public AccountingAccounts toDomain() {
+        return AccountingAccounts.builder()
+                .id(id)
+                .description(description)
+                .status(status)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .build();
     }
 
 }

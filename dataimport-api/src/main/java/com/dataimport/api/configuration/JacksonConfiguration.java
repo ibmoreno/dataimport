@@ -13,14 +13,17 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 @Configuration
 public class JacksonConfiguration implements Jackson2ObjectMapperBuilderCustomizer {
+
+    private final String APPLICATION_DATE_FORMAT = "dd/MM/yyyy";
+    private final String APPLICATION_DATE_TIME_FORMAT = "dd/MM/yyyy HH:mm:ss";
     @Override
     public void customize(Jackson2ObjectMapperBuilder jacksonObjectMapperBuilder) {
         jacksonObjectMapperBuilder.featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-                .deserializers(new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")))
-                .deserializers(new LocalDateDeserializer(DateTimeFormatter.ofPattern("dd-MM-yyyy")))
-                .serializers(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")))
-                .serializers(new LocalDateSerializer(DateTimeFormatter.ofPattern("dd-MM-yyyy")))
-                .simpleDateFormat("dd/MM/yyyy HH:mm:ss")
+                .deserializers(new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(APPLICATION_DATE_TIME_FORMAT)))
+                .deserializers(new LocalDateDeserializer(DateTimeFormatter.ofPattern(APPLICATION_DATE_FORMAT)))
+                .serializers(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(APPLICATION_DATE_TIME_FORMAT)))
+                .serializers(new LocalDateSerializer(DateTimeFormatter.ofPattern(APPLICATION_DATE_FORMAT)))
+                .simpleDateFormat(APPLICATION_DATE_TIME_FORMAT)
                 .timeZone(TimeZone.getTimeZone("America/Sao_Paulo"));
     }
 }

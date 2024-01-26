@@ -2,8 +2,10 @@ package com.dataimport.api.infra.controller.dto.customers;
 
 import com.dataimport.api.domain.Customers;
 import com.dataimport.api.domain.ReadModelVersion;
+import com.dataimport.api.domain.Status;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +17,7 @@ import org.hibernate.validator.constraints.br.CNPJ;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NewCustomersRequest {
-    @NotNull
+    @NotNull(message = "name cannot be null!")
     private String name;
     @CNPJ
     private String cnpj;
@@ -25,26 +27,27 @@ public class NewCustomersRequest {
     private String city;
     private String state;
     private String zipCode;
-    @NotNull
     @Email(message = "e-mail invalid!")
     private String email;
     private String phone;
-    @NotNull
+    private boolean active;
+    @NotNull(message = "readModelVersion cannot be null!")
     private ReadModelVersion readModelVersion;
 
     public Customers toDomain() {
         return Customers.builder()
-                .name(this.getName())
-                .cnpj(this.getCnpj())
-                .address(this.getAddress())
-                .number(this.getNumber())
-                .complement(this.getComplement())
-                .city(this.getCity())
-                .state(this.getState())
-                .zipCode(this.getZipCode())
-                .email(this.getEmail())
-                .phone(this.getPhone())
-                .readModelVersion(this.getReadModelVersion())
+                .name(name)
+                .cnpj(cnpj)
+                .address(address)
+                .number(number)
+                .complement(complement)
+                .city(city)
+                .state(state)
+                .zipCode(zipCode)
+                .email(email)
+                .phone(phone)
+                .active(active)
+                .readModelVersion(readModelVersion)
                 .build();
     }
 }

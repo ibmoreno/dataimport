@@ -9,6 +9,7 @@ import { LABEL_MAT_PAGINATOR_PT } from '@core/i18n/pt/mat-paginator';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { provideToastr } from 'ngx-toastr';
 import { ApplicationErrorHandler } from '@core/error/app.error-handler';
+import { IConfig, provideEnvironmentNgxMask } from 'ngx-mask';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,6 +17,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(BrowserModule, LoadingBarHttpClientModule, HttpClientModule),
     provideHttpClient(withInterceptorsFromDi()),
     provideAnimations(),
+    provideEnvironmentNgxMask(),
     provideToastr({ closeButton: true }),
     { provide: LOCALE_ID, useValue: 'pt' },
     { provide: MatPaginatorIntl, useValue: LABEL_MAT_PAGINATOR_PT() },

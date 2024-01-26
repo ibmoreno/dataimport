@@ -1,11 +1,11 @@
 package com.dataimport.api.application.usecase.balance_sheet.importdata.file.version;
 
 import com.dataimport.api.application.usecase.balance_sheet.importdata.file.ReadFile;
+import com.dataimport.api.domain.AccountingAccounts;
 import com.dataimport.api.domain.DataOutput;
 import com.dataimport.api.domain.MatchData;
 import com.dataimport.api.domain.ReadModelVersion;
 import com.dataimport.api.exception.ReadFileException;
-import com.dataimport.api.infra.database.jpa.entity.AccountingAccountsEntity;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.YearMonth;
@@ -31,7 +31,7 @@ class ReadFileV01 implements ReadFile {
         Map<String, Integer> accountsMatch = matchData.getAccounts()
                 .stream()
                 .collect(Collectors.toMap(account -> account.getDescription().toLowerCase()
-                        , AccountingAccountsEntity::getId));
+                        , AccountingAccounts::getId));
 
         try {
 

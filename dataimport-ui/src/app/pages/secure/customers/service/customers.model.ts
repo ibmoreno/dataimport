@@ -21,10 +21,10 @@ export class Customers extends BaseEntity {
         public zipCode?: string,
         public email?: string,
         public phone?: string,
-        public status?: string,
-        public readModelVersion?: string,    
-        public createAt?: Date,
-        public updateAt?: Date,                    
+        public active: boolean = true,
+        public readModelVersion: string = "V01",   
+        public createdAt?: Date,
+        public updatedAt?: Date,                    
     ) {
         super();
     }

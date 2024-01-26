@@ -1,6 +1,7 @@
 package com.dataimport.api.infra.database.jpa.entity;
 
 
+import com.dataimport.api.domain.BalanceSheet;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -39,6 +40,17 @@ public class BalanceSheetEntity {
     @PreUpdate
     protected void preUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public BalanceSheet toDomain() {
+        return BalanceSheet.builder()
+                .customersId(balanceSheetEntityPk.getCustomersId())
+                .accountingAccountsId(balanceSheetEntityPk.getAccountingAccountsId())
+                .monthYear(balanceSheetEntityPk.getMonthYear())
+                .costValue(costValue)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .build();
     }
 
 }

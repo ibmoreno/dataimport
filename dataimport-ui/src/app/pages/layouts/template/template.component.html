@@ -22,7 +22,7 @@
             <mat-list-item routerLink="/customers" routerLinkActive="active" tdLayoutClose>
                 <mat-icon matListItemIcon>groups</mat-icon>Clientes
             </mat-list-item>
-            <mat-list-item tdLayoutClose>
+            <mat-list-item routerLink="/home" tdLayoutClose>
                 <mat-icon matListItemIcon>logout</mat-icon>Sair
             </mat-list-item>
         </mat-nav-list>
@@ -40,7 +40,7 @@
 
         <div td-toolbar-content layout="row" layout-align="end center" flex>
             <button class="overflow-visible" mat-icon-button
-                matTooltip="Sair do Data Import">
+                matTooltip="Sair do Data Import" routerLink="/home">
                 <mat-icon>logout</mat-icon>
             </button>
         </div>

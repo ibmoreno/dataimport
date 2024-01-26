@@ -25,7 +25,7 @@ public class Customers {
     private String zipCode;
     private String email;
     private String phone;
-    private Status status;
+    private Boolean active;
     private ReadModelVersion readModelVersion;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -43,7 +43,7 @@ public class Customers {
                 .zipCode(zipCode)
                 .email(email)
                 .phone(phone)
-                .status(status)
+                .status(Boolean.TRUE.equals(active) ? Status.A : Status.I)
                 .readModelVersion(readModelVersion)
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
@@ -63,7 +63,7 @@ public class Customers {
                 .zipCode(zipCode)
                 .email(email)
                 .phone(phone)
-                .status(status)
+                .active(active)
                 .readModelVersion(readModelVersion)
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)

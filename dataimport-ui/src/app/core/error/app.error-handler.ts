@@ -59,6 +59,7 @@ export class ApplicationErrorHandler implements ErrorHandler {
 
                  this.ms.error('Requisição não processada. Notifique o administrador do sistema.',
                      'Erro na Requisição', { closeButton: true });
+                console.log(error)
 
             }
 

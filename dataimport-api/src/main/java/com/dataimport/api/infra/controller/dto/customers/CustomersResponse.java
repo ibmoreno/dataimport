@@ -1,7 +1,6 @@
 package com.dataimport.api.infra.controller.dto.customers;
 
 import com.dataimport.api.domain.ReadModelVersion;
-import com.dataimport.api.domain.Status;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +23,7 @@ public class CustomersResponse {
     private String zipCode;
     private String email;
     private String phone;
-    private Status status;
+    private Boolean active;
     private ReadModelVersion readModelVersion;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

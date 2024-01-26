@@ -82,7 +82,7 @@ public class CustomersEntity {
                 .zipCode(zipCode)
                 .email(email)
                 .phone(phone)
-                .status(status)
+                .active(Status.A.equals(status))
                 .readModelVersion(readModelVersion)
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)

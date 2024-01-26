@@ -1,0 +1,182 @@
+<td-layout-card-over>
+
+    <form [formGroup]="resourceForm" (ngSubmit)="submitForm()">
+
+        <mat-card-title>        
+            <div layout="row" layout-align="start center">
+                <span class="mat-title" flex>{{titleForm}}</span>
+                <span>
+    
+                    @if (actionSystem.isView()) {
+                        <a mat-icon-button matTooltip="Editar" 
+                            [routerLink]="['/customers', resourceForm.get('id')?.value ,'edit']"
+                            [state]="{entity: resourceForm.value}">
+                            <mat-icon>mode_edit</mat-icon>
+                        </a>
+                  
+                        <a mat-icon-button matTooltip="Excluir" (click)="delete()">
+                            <mat-icon>delete</mat-icon>
+                        </a>
+                    }
+
+                </span>
+            </div>
+        </mat-card-title>
+
+        <mat-divider></mat-divider>
+
+        <mat-card-content>
+            <p class="mat-body-2">Dados Cadastrais:</p>
+            <div layout="row" layout-xs="column" layout-margin>
+                <mat-form-field flex appearance="outline">
+                    <mat-label>Nome</mat-label>
+                    <input matInput class="form-control" placeholder="Nome" formControlName="name" required
+                        maxlength="100"/>
+                    <mat-error>
+                        <app-message-error [form-control]="resourceForm.get('name')"></app-message-error>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field flex appearance="outline">
+                    <mat-label>CNPJ</mat-label>
+                    <input matInput class="form-control" placeholder="99999999999999" formControlName="cnpj" maxlength="18" mask="00.000.000/0000-00"/>
+                    <mat-error>
+                        <app-message-error [form-control]="resourceForm.get('cnpj')"></app-message-error>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div layout="row" layout-xs="column" layout-margin>
+                <mat-form-field flex appearance="outline">
+                    <mat-label>Endereço</mat-label>
+                    <input matInput class="form-control" placeholder="Endereço" formControlName="address" maxlength="100"/>
+                    <mat-error>
+                        <app-message-error [form-control]="resourceForm.get('address')"></app-message-error>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field flex appearance="outline">
+                    <mat-label>Número</mat-label>
+                    <input matInput class="form-control" placeholder="Número" formControlName="number" maxlength="10"/>
+                    <mat-error>
+                        <app-message-error [form-control]="resourceForm.get('number')"></app-message-error>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field flex appearance="outline">
+                    <mat-label>CEP</mat-label>
+                    <input matInput class="form-control" placeholder="9999999" formControlName="zipCode" maxlength="10" mask="00.000-000"/>
+                    <mat-error>
+                        <app-message-error [form-control]="resourceForm.get('zipCode')"></app-message-error>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+                
+            <div layout="row" layout-xs="column" layout-margin>
+                <mat-form-field flex appearance="outline">
+                    <mat-label>Complemento</mat-label>
+                    <input matInput class="form-control" placeholder="Complemento" formControlName="complement" maxlength="50"/>
+                    <mat-error>
+                        <app-message-error [form-control]="resourceForm.get('complement')"></app-message-error>
+                    </mat-error>
+               </mat-form-field>
+            </div>            
+
+            <div layout="row" layout-xs="column" layout-margin>
+                <mat-form-field flex appearance="outline">
+                    <mat-label>Cidade</mat-label>
+                    <input matInput class="form-control" placeholder="Cidade" formControlName="city" maxlength="50"/>
+                    <mat-error>
+                        <app-message-error [form-control]="resourceForm.get('city')"></app-message-error>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field flex appearance="outline">
+                    <mat-label>Estado</mat-label>
+                    <mat-select formControlName="state">
+                        <mat-option value="AC">ACRE</mat-option>
+                        <mat-option value="AL">ALAGOAS</mat-option>
+                        <mat-option value="AP">AMAPÁ</mat-option>
+                        <mat-option value="AM">AMAZONAS</mat-option>
+                        <mat-option value="BA">BAHIA</mat-option>
+                        <mat-option value="CE">CEARÁ</mat-option>
+                        <mat-option value="DF">DISTRITO FEDERAL</mat-option>
+                        <mat-option value="ES">ESPIRITO SANTO</mat-option>
+                        <mat-option value="GO">GOIÁS</mat-option>
+                        <mat-option value="MA">MARANHÃO</mat-option>
+                        <mat-option value="MT">MATO GROSSO</mat-option>
+                        <mat-option value="MS">MATO GROSSO DO SUL</mat-option>
+                        <mat-option value="MG">MINAS GERAIS</mat-option>
+                        <mat-option value="PA">PARÁ</mat-option>
+                        <mat-option value="PB">PARÁBA</mat-option>
+                        <mat-option value="PR">PARÁNÁ</mat-option>
+                        <mat-option value="PE">PERNAMBUCO</mat-option>
+                        <mat-option value="PI">PIAUI</mat-option>
+                        <mat-option value="RJ">RIO DE JANEIRO</mat-option>
+                        <mat-option value="RN">RIO GRANDE DO NORTE</mat-option>
+                        <mat-option value="RS">RIO GRANDE DO SUL</mat-option>
+                        <mat-option value="RO">RONDONIA</mat-option>
+                        <mat-option value="RR">RORAIMA</mat-option>
+                        <mat-option value="SC">SANTA CATARINA</mat-option>
+                        <mat-option value="SP">SÁO PAULO</mat-option>
+                        <mat-option value="SE">SERGIPE</mat-option>
+                        <mat-option value="TO">TOCANTINS</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div layout="row" layout-xs="column" layout-margin>
+                <mat-form-field flex appearance="outline">
+                    <mat-label>E-mail</mat-label>
+                    <input matInput class="form-control" placeholder="E-mail" formControlName="email" maxlength="50"/>
+                    <mat-error>
+                        <app-message-error [form-control]="resourceForm.get('email')"></app-message-error>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field flex appearance="outline">
+                    <mat-label>Telefone</mat-label>
+                    <input matInput class="form-control" placeholder="99999999999" formControlName="phone" maxlength="15" mask="(00) 0000-0000"/>
+                    <mat-error>
+                        <app-message-error [form-control]="resourceForm.get('phone')"></app-message-error>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+             
+            <p class="mat-body-2">Controle do Sistema:</p>
+            <div layout="row" layout-xs="column" layout-margin>
+                <mat-form-field flex appearance="outline">
+                    <mat-label>Data de Cadastro</mat-label>
+                    <input matInput class="form-control" placeholder="Data de Cadastro" formControlName="createdAt" readonly=true>
+                </mat-form-field>
+                <mat-form-field flex appearance="outline">
+                    <mat-label>Data de Atualização</mat-label>
+                    <input matInput class="form-control" placeholder="Data de Atualização" formControlName="updatedAt" readonly=true>
+                </mat-form-field>
+            </div>   
+
+            <div layout="row" layout-margin flex style="margin: 20px 0 30px 0">
+                <mat-slide-toggle formControlName="active">Ativo</mat-slide-toggle>
+            </div>
+
+        </mat-card-content>
+
+        <mat-divider></mat-divider>
+
+        <mat-card-actions flex align="end">
+
+            @if (actionSystem.isView()) {
+                <button mat-button type="button" class="text-upper" [routerLink]="[ '/customers' ]">Fechar</button>
+            } @else {
+                <button mat-button type="submit" class="text-upper" color="accent"
+                    [disabled]="submittingForm || resourceForm.invalid || resourceForm.disabled">
+                    @if (submittingForm) {
+                        Salvando...
+                    } @else {
+                        Salvar
+                    }
+                </button>
+                <button mat-button type="button" class="text-upper" (click)="cancel()">Cancelar</button>
+            }
+        </mat-card-actions>
+
+    </form>
+
+
+
+</td-layout-card-over>

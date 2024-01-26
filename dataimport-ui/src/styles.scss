@@ -49,6 +49,7 @@ $dataimport-ui-theme: mat.define-light-theme((
 @include mat.all-component-themes($dataimport-ui-theme);
 @include cov.covalent-theme($dataimport-ui-theme); 
 
+
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
@@ -57,4 +58,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-icon.mat-icon-logo {
   height: 24px;
   width: 24px; 
+}
+
+[layout-margin], [layout-margin] > [flex], 
+[layout-margin] > [flex-gt-sm], 
+[layout-margin] > [flex-md], [layout-margin] > [flex-lt-lg] {
+  margin: 3px;
 }

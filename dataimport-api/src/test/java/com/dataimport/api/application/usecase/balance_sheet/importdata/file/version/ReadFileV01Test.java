@@ -1,6 +1,7 @@
 package com.dataimport.api.application.usecase.balance_sheet.importdata.file.version;
 
 import com.dataimport.api.application.usecase.balance_sheet.importdata.file.ReadFile;
+import com.dataimport.api.domain.AccountingAccounts;
 import com.dataimport.api.domain.DataOutput;
 import com.dataimport.api.domain.MatchData;
 import com.dataimport.api.domain.ReadModelVersion;
@@ -28,9 +29,9 @@ class ReadFileV01Test {
 
             try (InputStream inputStream = ReadFileV01Test.class.getResourceAsStream("/file/movement_v01.xlsx")) {
 
-            Set<AccountingAccountsEntity> accounts = new HashSet<>();
-            accounts.add(AccountingAccountsEntity.builder().id(1).description("Ativo Circulante").build());
-            accounts.add(AccountingAccountsEntity.builder().id(2).description("Caixa e Equivalentes de Caixa").build());
+            Set<AccountingAccounts> accounts = new HashSet<>();
+            accounts.add(AccountingAccounts.builder().id(1).description("Ativo Circulante").build());
+            accounts.add(AccountingAccounts.builder().id(2).description("Caixa e Equivalentes de Caixa").build());
 
             MatchData filter = MatchData.builder()
                     .year(2023)
@@ -51,9 +52,9 @@ class ReadFileV01Test {
 
         try (InputStream file = ReadFileV01Test.class.getResourceAsStream("/file/movement_v01.xlsx")) {
 
-            Set<AccountingAccountsEntity> accounts = new HashSet<>();
-            accounts.add(AccountingAccountsEntity.builder().id(1).description("Ativo Circulante").build());
-            accounts.add(AccountingAccountsEntity.builder().id(2).description("Caixa e Equivalentes de Caixa").build());
+            Set<AccountingAccounts> accounts = new HashSet<>();
+            accounts.add(AccountingAccounts.builder().id(1).description("Ativo Circulante").build());
+            accounts.add(AccountingAccounts.builder().id(2).description("Caixa e Equivalentes de Caixa").build());
 
             MatchData filter = MatchData.builder()
                     .months(List.of(1))

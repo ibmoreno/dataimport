@@ -51,7 +51,11 @@ export class CustomersListComponent extends BaseResourceListComponent<Customers>
   }
 
   protected override search(searchText: string, pageableModel: PageableModel<Customers>): void {
-    console.log(searchText)
+    this.customersService.search(searchText, pageableModel).subscribe({
+      next: (pageableModel: PageableModel<Customers>) => {
+        this.pageableModel = pageableModel;
+      },
+    });
   }
 
 }

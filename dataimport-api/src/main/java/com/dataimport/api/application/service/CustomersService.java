@@ -4,11 +4,13 @@ import com.dataimport.api.application.gateway.CustomersGateway;
 import com.dataimport.api.application.usecase.balance_sheet.importdata.ImportDataToBalanceSheet;
 import com.dataimport.api.domain.Customers;
 import com.dataimport.api.exception.NotFoundException;
+import com.dataimport.api.infra.controller.dto.customers.CustomersResponse;
 import com.dataimport.api.infra.controller.dto.customers.NewCustomersRequest;
 import com.dataimport.api.infra.controller.dto.customers.UpdateCustomersRequest;
 import java.io.InputStream;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,8 @@ public interface CustomersService {
     Customers update(Integer id, UpdateCustomersRequest updateCustomersRequest);
 
     void delete(Integer id);
+
+    Page<Customers> search(String search, Pageable pageable);
 
     void importMovementAccount(Integer customerId, Integer year, List<Integer> months, InputStream file);
 
@@ -68,8 +72,14 @@ class CustomersServiceImpl implements CustomersService {
     }
 
     @Override
+    public Page<Customers> search(String search, Pageable pageable) {
+        return customersGateway.search(search, pageable);
+    }
+
+    @Override
     public void importMovementAccount(Integer customerId, Integer year, List<Integer> months, InputStream file) {
         Customers customers = this.getOne(customerId);
         importDataToBalanceSheet.execute(customers, year, months, file);
     }
+
 }
