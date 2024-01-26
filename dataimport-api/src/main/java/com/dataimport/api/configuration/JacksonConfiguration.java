@@ -10,15 +10,20 @@ import java.util.TimeZone;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.zalando.problem.jackson.ProblemModule;
+import org.zalando.problem.violations.ConstraintViolationProblemModule;
 
 @Configuration
 public class JacksonConfiguration implements Jackson2ObjectMapperBuilderCustomizer {
 
     private final String APPLICATION_DATE_FORMAT = "dd/MM/yyyy";
     private final String APPLICATION_DATE_TIME_FORMAT = "dd/MM/yyyy HH:mm:ss";
+
     @Override
     public void customize(Jackson2ObjectMapperBuilder jacksonObjectMapperBuilder) {
-        jacksonObjectMapperBuilder.featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+        jacksonObjectMapperBuilder
+                .modules(new ProblemModule().withStackTraces(false), new ConstraintViolationProblemModule())
+                .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                 .deserializers(new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(APPLICATION_DATE_TIME_FORMAT)))
                 .deserializers(new LocalDateDeserializer(DateTimeFormatter.ofPattern(APPLICATION_DATE_FORMAT)))
                 .serializers(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(APPLICATION_DATE_TIME_FORMAT)))
