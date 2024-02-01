@@ -4,9 +4,10 @@ server:
 spring:
   servlet:
     multipart:
-      enabled: false
-    max-file-size: 20MB
-    max-request-size: 20MB
+      enabled: true
+      location: ${MULTIPART_LOCATION:/tmp}
+      max-file-size: 20MB
+      max-request-size: 20MB
 
   datasource:
     url: ${JDBC_POSTGRES_URL:jdbc:postgresql://localhost:5432/data_import}
