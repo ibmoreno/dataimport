@@ -12,7 +12,7 @@ COPY ./ /usr/local/app/
 RUN npm install
 RUN npm run build
 
-FROM nginx:latest
+FROM nginx:1.25.3
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /usr/local/app/dist/dataimport-ui/browser /usr/share/nginx/html
 EXPOSE 80

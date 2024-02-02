@@ -72,7 +72,7 @@ class CustomersController {
                                                                      @RequestParam MultipartFile file) {
 
         customersService.importMovementAccount(customerId, year, months, UploadFileHelper.isValidFile(file));
-        return ResponseEntity.ok(Map.of("message", "Imported successfully"));
+        return ResponseEntity.ok(Map.of("message", "File uploaded successfully"));
 
     }
 

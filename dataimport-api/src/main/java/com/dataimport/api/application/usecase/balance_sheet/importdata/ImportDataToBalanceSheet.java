@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,7 @@ public interface ImportDataToBalanceSheet {
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 class ImportDataToBalanceSheetImpl implements ImportDataToBalanceSheet {
 
     private final AccountingAccountsGateway accountingAccountsGateway;
@@ -31,6 +34,9 @@ class ImportDataToBalanceSheetImpl implements ImportDataToBalanceSheet {
 
     @Transactional
     public void execute(Customers customers, Integer year, List<Integer> months, InputStream file) {
+
+        log.info("Importing movement account for customer {} and months {} and year {}",
+                customers.getId(), months, year);
 
         List<AccountingAccounts> accounts = accountingAccountsGateway.findAllByStatus(Status.A);
         if (accounts.isEmpty()) {
@@ -58,6 +64,8 @@ class ImportDataToBalanceSheetImpl implements ImportDataToBalanceSheet {
         ).toList();
 
         balanceSheetGateway.saveAll(balanceSheetEntities);
+        log.info("Complete import movement account for customer {} and months {} and year {}",
+                customers.getId(), months, year);
 
     }
 

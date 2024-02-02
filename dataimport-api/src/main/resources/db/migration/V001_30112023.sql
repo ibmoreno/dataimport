@@ -79,7 +79,7 @@ ALTER TABLE balance_sheet
 
 -- insert data in table customers
 INSERT INTO customers (id, name, status, read_model_version, created_at, updated_at) VALUES
-     (nextval('seq_customers'),'Client Sample', 'A', 'V01', current_timestamp, current_timestamp);
+     (nextval('seq_customers'),'Fortuna Nutrição Animal', 'A', 'V01', current_timestamp, current_timestamp);
 
 -- insert data in table accounts
 INSERT INTO accounting_accounts (id,description,status,created_at,updated_at) VALUES

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -22,11 +23,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 @Component
+@Slf4j
 class ReadFileV01 implements ReadFile {
 
     private static final String SHEET_NAME = "Demonstrativos";
 
     public List<DataOutput> execute(InputStream file, MatchData matchData) {
+
+        log.info("read file model v01");
 
         Map<String, Integer> accountsMatch = matchData.getAccounts()
                 .stream()

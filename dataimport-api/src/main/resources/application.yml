@@ -22,3 +22,7 @@ spring:
   flyway:
     enabled: true
 
+logging:
+  level:
+    root: info
+    com.dataimport.api: info
