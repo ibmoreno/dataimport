@@ -57,7 +57,7 @@ export class CustomersImportComponent {
     protected customerService: CustomersService,
   ) {
     this.customers = this.route.snapshot.data['resolverData'];
-    this.title = 'IMPORTAR PLANILHAR - ' + this.customers.name;
+    this.title = 'IMPORTAR PLANILHA - ' + this.customers.name;
     this.resourceForm = formBuilder.group({
       customerId: [this.customers.id],
       year: [new Date().getFullYear(), { validators: [Validators.required, Validators.minLength(4), NoBlank], updateOn: 'change' }],
@@ -81,7 +81,7 @@ export class CustomersImportComponent {
         complete: () => {
           this.submittingForm = false;
           this.uploadProgress = 0;
-          this.toastr.success('Arquivo importado com sucesso!');
+          this.toastr.success('Upload realizado com sucesso!');
           this.router.navigateByUrl('/customers');
         },
         error: (error: any) => {

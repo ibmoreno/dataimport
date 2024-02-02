@@ -4,16 +4,19 @@ import com.dataimport.api.application.gateway.CustomersGateway;
 import com.dataimport.api.application.usecase.balance_sheet.importdata.ImportDataToBalanceSheet;
 import com.dataimport.api.domain.Customers;
 import com.dataimport.api.exception.NotFoundException;
-import com.dataimport.api.infra.controller.dto.customers.CustomersResponse;
 import com.dataimport.api.infra.controller.dto.customers.NewCustomersRequest;
 import com.dataimport.api.infra.controller.dto.customers.UpdateCustomersRequest;
 import java.io.InputStream;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ForkJoinPool;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface CustomersService {
     Page<Customers> getAll(Pageable pageable);
@@ -77,6 +80,8 @@ class CustomersServiceImpl implements CustomersService {
     }
 
     @Override
+    @Async("asyncExecutor")
+    @Transactional
     public void importMovementAccount(Integer customerId, Integer year, List<Integer> months, InputStream file) {
         Customers customers = this.getOne(customerId);
         importDataToBalanceSheet.execute(customers, year, months, file);
