@@ -50,12 +50,10 @@ public class CustomersRepositoryGateway implements CustomersGateway {
     public Page<Customers> search(String search, Pageable pageable) {
 
         if (!StringUtils.hasText(search)) {
-            return customersRepository.findAll(statusInActiveAndInactive, pageable)
-                    .map(CustomersEntity::toDomain);
+            return this.findAll(pageable);
         }
 
-        StringBuilder pattern = new StringBuilder();
-        pattern.append("%");
+        StringBuilder pattern = new StringBuilder("%");
         pattern.append(search.toLowerCase());
         pattern.append("%");
 
