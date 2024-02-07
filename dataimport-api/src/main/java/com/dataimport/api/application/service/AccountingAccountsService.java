@@ -61,9 +61,7 @@ class AccountingAccountsServiceImpl implements AccountingAccountsService {
     @Override
     @Transactional
     public void delete(Integer id) {
-        AccountingAccounts accountingAccounts = accountingAccountsGateway.getOne(id)
-                .orElseThrow(() -> new NotFoundException("Accounting Accounts not found"));
-
+        AccountingAccounts accountingAccounts = this.getOne(id);
         List<AccountingAccounts> accountingAccountsAggregateIds =
                 accountingAccountsGateway.findAllByAggregateAccountId(accountingAccounts.getId());
 

@@ -16,8 +16,8 @@ import org.zalando.problem.violations.ConstraintViolationProblemModule;
 @Configuration
 public class JacksonConfiguration implements Jackson2ObjectMapperBuilderCustomizer {
 
-    private final String APPLICATION_DATE_FORMAT = "dd/MM/yyyy";
-    private final String APPLICATION_DATE_TIME_FORMAT = "dd/MM/yyyy HH:mm:ss";
+    private static final String APPLICATION_DATE_FORMAT = "dd/MM/yyyy";
+    private static final String APPLICATION_DATE_TIME_FORMAT = "dd/MM/yyyy HH:mm:ss";
 
     @Override
     public void customize(Jackson2ObjectMapperBuilder jacksonObjectMapperBuilder) {

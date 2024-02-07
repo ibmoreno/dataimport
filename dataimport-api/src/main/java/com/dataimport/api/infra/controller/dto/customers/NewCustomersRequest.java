@@ -2,10 +2,8 @@ package com.dataimport.api.infra.controller.dto.customers;
 
 import com.dataimport.api.domain.Customers;
 import com.dataimport.api.domain.ReadModelVersion;
-import com.dataimport.api.domain.Status;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
