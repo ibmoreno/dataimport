@@ -30,7 +30,7 @@ class ReadFileV01 implements ReadFile {
 
     public List<DataOutput> execute(InputStream file, MatchData matchData) {
 
-        log.info("read file model v01");
+        log.info("read excel file, vendor model v01");
 
         Map<String, Integer> accountsMatch = matchData.getAccounts()
                 .stream()

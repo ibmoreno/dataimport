@@ -32,7 +32,7 @@ class ImportDataToBalanceSheetImpl implements ImportDataToBalanceSheet {
     private final AccountingAccountsGateway accountingAccountsGateway;
     private final BalanceSheetGateway balanceSheetGateway;
     private final StrategyReadFile strategyReadFile;
-    private final ForkJoinPool forkJoinPool = new ForkJoinPool(10);
+    private final ForkJoinPool forkJoinPool;
 
 
     @Transactional
