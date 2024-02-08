@@ -1,0 +1,90 @@
+<td-layout-card-over>
+
+    <form [formGroup]="resourceForm" (ngSubmit)="submitForm()">
+
+        <mat-card-title>        
+            <div layout="row" layout-align="start center">
+                <span class="mat-title" flex>{{titleForm}}</span>
+                <span>
+    
+                    @if (actionSystem.isView()) {
+                        <a mat-icon-button matTooltip="Editar" 
+                            [routerLink]="['/accounting-accounts', resourceForm.get('id')?.value ,'edit']"
+                            [state]="{entity: resourceForm.value}">
+                            <mat-icon>mode_edit</mat-icon>
+                        </a>
+                  
+                        <a mat-icon-button matTooltip="Excluir" (click)="delete()">
+                            <mat-icon>delete</mat-icon>
+                        </a>
+                    }
+
+                </span>
+            </div>
+        </mat-card-title>
+
+        <mat-divider></mat-divider>
+
+        <mat-card-content>
+            <p class="mat-body-2">Dados Cadastrais:</p>
+            <div layout="row" layout-xs="column" layout-margin>
+                <mat-form-field flex appearance="outline">
+                    <mat-label>Nome</mat-label>
+                    <input matInput class="form-control" placeholder="Descrição" formControlName="description" required
+                        maxlength="100"/>
+                    <mat-error>
+                        <app-message-error [form-control]="resourceForm.get('description')"></app-message-error>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div layout="row" layout-xs="column" layout-margin>
+                <mat-form-field flex appearance="outline">
+                    <mat-label>Conta aggregadora</mat-label>
+                    <input matInput class="form-control" placeholder="Conta agregadora" formControlName="aggregateAccountId" maxlength="100"/>
+                    <mat-error>
+                        <app-message-error [form-control]="resourceForm.get('aggregateAccountId')"></app-message-error>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+                
+            <p class="mat-body-2">Controle do Sistema:</p>
+            <div layout="row" layout-xs="column" layout-margin>
+                <mat-form-field flex appearance="outline">
+                    <mat-label>Data de Cadastro</mat-label>
+                    <input matInput class="form-control" placeholder="Data de Cadastro" formControlName="createdAt" readonly=true>
+                </mat-form-field>
+                <mat-form-field flex appearance="outline">
+                    <mat-label>Data de Atualização</mat-label>
+                    <input matInput class="form-control" placeholder="Data de Atualização" formControlName="updatedAt" readonly=true>
+                </mat-form-field>
+            </div>   
+
+            <div layout="row" layout-margin flex style="margin: 20px 0 30px 0">
+                <mat-slide-toggle formControlName="active">Ativo</mat-slide-toggle>
+            </div>
+
+        </mat-card-content>
+
+        <mat-divider></mat-divider>
+
+        <mat-card-actions flex align="end">
+
+            @if (actionSystem.isView()) {
+                <button mat-button type="button" class="text-upper" [routerLink]="[ '/accounting-accounts' ]">Fechar</button>
+            } @else {
+                <button mat-button type="submit" class="text-upper" color="accent"
+                    [disabled]="submittingForm || resourceForm.invalid || resourceForm.disabled">
+                    @if (submittingForm) {
+                        Salvando...
+                    } @else {
+                        Salvar
+                    }
+                </button>
+                <button mat-button type="button" class="text-upper" (click)="cancel()">Cancelar</button>
+            }
+        </mat-card-actions>
+
+    </form>
+
+</td-layout-card-over>
