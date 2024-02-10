@@ -31,8 +31,7 @@ public class CustomersRepositoryGateway implements CustomersGateway {
 
     @Override
     public Optional<Customers> getOne(Integer id) {
-        CustomersEntity customersEntity = customersRepository.getReferenceById(id);
-        return Optional.of(customersEntity).map(CustomersEntity::toDomain);
+        return customersRepository.findById(id).map(CustomersEntity::toDomain);
     }
 
     @Override

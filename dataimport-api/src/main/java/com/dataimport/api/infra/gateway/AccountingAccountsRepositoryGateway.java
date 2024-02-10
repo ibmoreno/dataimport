@@ -5,6 +5,7 @@ import com.dataimport.api.domain.AccountingAccounts;
 import com.dataimport.api.domain.AggregateAccount;
 import com.dataimport.api.domain.Status;
 import com.dataimport.api.infra.database.jpa.entity.AccountingAccountsEntity;
+
 import com.dataimport.api.infra.database.jpa.entity.AccountingAccountsEntity_;
 import com.dataimport.api.infra.database.jpa.repository.AccountingAccountsRepository;
 import java.util.List;
@@ -46,8 +47,7 @@ public class AccountingAccountsRepositoryGateway implements AccountingAccountsGa
 
     @Override
     public Optional<AccountingAccounts> getOne(Integer id) {
-        AccountingAccountsEntity accountingAccountsEntity = accountingAccountsRepository.getReferenceById(id);
-        return Optional.of(accountingAccountsEntity).map(AccountingAccountsEntity::toDomain);
+        return accountingAccountsRepository.findById(id).map(AccountingAccountsEntity::toDomain);
     }
 
     @Override
