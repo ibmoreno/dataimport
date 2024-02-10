@@ -11,16 +11,16 @@ import com.dataimport.api.domain.DataOutput;
 import com.dataimport.api.domain.MatchData;
 import com.dataimport.api.domain.ReadModelVersion;
 import com.dataimport.api.domain.Status;
-import com.dataimport.api.exception.NotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
-import org.junit.jupiter.api.Assertions;
+import java.util.concurrent.ForkJoinPool;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -45,7 +45,8 @@ class ImportDataToBalanceSheetImplTest {
         this.importDataToBalanceSheet = new ImportDataToBalanceSheetImpl(
                 accountingAccountsGateway,
                 balanceSheetGateway,
-                strategyReadFile);
+                strategyReadFile,
+                new ForkJoinPool(2));
     }
 
     @Test
@@ -82,10 +83,10 @@ class ImportDataToBalanceSheetImplTest {
             Customers customers = Customers.builder().id(1).readModelVersion(ReadModelVersion.V01).build();
             importDataToBalanceSheet.execute(customers, 2023, List.of(1), file);
 
-            verify(accountingAccountsGateway).findAllByStatus(any(Status.class));
-            verify(balanceSheetGateway).saveAll(anyList());
-            verify(strategyReadFile).getReadFile(any());
-            verify(readFile).execute(any(InputStream.class), any(MatchData.class));
+            verify(accountingAccountsGateway, Mockito.timeout(1000)).findAllByStatus(any(Status.class));
+            verify(balanceSheetGateway, Mockito.timeout(1000)).saveAll(anyList());
+            verify(strategyReadFile, Mockito.timeout(1000)).getReadFile(any());
+            verify(readFile, Mockito.timeout(1000)).execute(any(InputStream.class), any(MatchData.class));
 
         }
 

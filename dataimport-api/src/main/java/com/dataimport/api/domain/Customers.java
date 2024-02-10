@@ -3,10 +3,12 @@ package com.dataimport.api.domain;
 import com.dataimport.api.infra.database.jpa.entity.CustomersEntity;
 import com.dataimport.api.infra.controller.dto.customers.CustomersResponse;
 import java.time.LocalDateTime;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Data
@@ -27,7 +29,9 @@ public class Customers {
     private String phone;
     private Boolean active;
     private ReadModelVersion readModelVersion;
+    @Setter(value = AccessLevel.NONE)
     private LocalDateTime createdAt;
+    @Setter(value = AccessLevel.NONE)
     private LocalDateTime updatedAt;
 
     public CustomersEntity toEntity() {

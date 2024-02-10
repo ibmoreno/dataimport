@@ -158,7 +158,7 @@
 
         <mat-divider></mat-divider>
 
-        <mat-card-actions flex align="end">
+        <mat-card-actions flex [align]="'end'">
 
             @if (actionSystem.isView()) {
                 <button mat-button type="button" class="text-upper" [routerLink]="[ '/customers' ]">Fechar</button>

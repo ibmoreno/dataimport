@@ -19,6 +19,10 @@ export const AppRoutes: Routes = [
             {
                 path: 'customers',
                 loadChildren: () => import('./pages/secure/customers/customers.routes').then(r => r.CustomersRoutes)
+            },
+            {
+                path: 'accounting-accounts',
+                loadChildren: () => import('./pages/secure/accounting-accounts/accounting-accounts.routes').then(r => r.AccountingAccountsRoutes)
             }
         ]
     },

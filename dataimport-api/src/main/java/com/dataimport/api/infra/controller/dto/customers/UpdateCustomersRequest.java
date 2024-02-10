@@ -36,9 +36,9 @@ public class UpdateCustomersRequest {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Customers toDomain(Integer id) {
+    public Customers toDomain(Customers customers) {
         return Customers.builder()
-                .id(id)
+                .id(customers.getId())
                 .name(name)
                 .cnpj(cnpj)
                 .address(address)
@@ -51,8 +51,8 @@ public class UpdateCustomersRequest {
                 .phone(phone)
                 .active(active)
                 .readModelVersion(readModelVersion)
-                .createdAt(createdAt)
-                .updatedAt(updatedAt)
+                .createdAt(customers.getCreatedAt())
+                .updatedAt(customers.getUpdatedAt())
                 .build();
     }
 

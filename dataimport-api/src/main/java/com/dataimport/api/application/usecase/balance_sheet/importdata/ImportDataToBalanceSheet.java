@@ -13,8 +13,9 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ForkJoinPool;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,41 +32,53 @@ class ImportDataToBalanceSheetImpl implements ImportDataToBalanceSheet {
     private final AccountingAccountsGateway accountingAccountsGateway;
     private final BalanceSheetGateway balanceSheetGateway;
     private final StrategyReadFile strategyReadFile;
+    private final ForkJoinPool forkJoinPool;
+
 
     @Transactional
     public void execute(Customers customers, Integer year, List<Integer> months, InputStream file) {
 
-        log.info("Importing movement account for customer {} and months {} and year {}",
-                customers.getId(), months, year);
+        CompletableFuture.runAsync(() -> {
 
-        List<AccountingAccounts> accounts = accountingAccountsGateway.findAllByStatus(Status.A);
-        if (accounts.isEmpty()) {
-            return;
-        }
+            log.info("Importing movement account for customer {} and months {} and year {}",
+                    customers.getId(), months, year);
 
-        MatchData filter = MatchData.builder()
-                .year(year)
-                .months(months)
-                .accounts(new HashSet<>(accounts))
-                .build();
+            List<AccountingAccounts> accounts = accountingAccountsGateway.findAllByStatus(Status.A);
+            if (accounts.isEmpty()) {
+                return;
+            }
 
-        List<DataOutput> accountImports = strategyReadFile.getReadFile(customers.getReadModelVersion())
-                .execute(file, filter);
+            MatchData filter = MatchData.builder()
+                    .year(year)
+                    .months(months)
+                    .accounts(new HashSet<>(accounts))
+                    .build();
 
-        List<BalanceSheet> balanceSheetEntities = accountImports.stream().map(account ->
-                BalanceSheet.builder()
-                        .customersId(customers.getId())
-                        .accountingAccountsId(account.getAccountingAccountsId())
-                        .monthYear(account.getMonthYear())
-                        .costValue(account.getValue())
-                        .createdAt(LocalDateTime.now())
-                        .updatedAt(LocalDateTime.now())
-                        .build()
-        ).toList();
+            List<DataOutput> accountImports = strategyReadFile.getReadFile(customers.getReadModelVersion())
+                    .execute(file, filter);
 
-        balanceSheetGateway.saveAll(balanceSheetEntities);
-        log.info("Complete import movement account for customer {} and months {} and year {}",
-                customers.getId(), months, year);
+            List<BalanceSheet> balanceSheetEntities = accountImports.stream().map(account ->
+                    BalanceSheet.builder()
+                            .customersId(customers.getId())
+                            .accountingAccountsId(account.getAccountingAccountsId())
+                            .monthYear(account.getMonthYear())
+                            .costValue(account.getValue())
+                            .createdAt(LocalDateTime.now())
+                            .updatedAt(LocalDateTime.now())
+                            .build()
+            ).toList();
+
+            balanceSheetGateway.saveAll(balanceSheetEntities);
+
+        }, forkJoinPool).whenCompleteAsync((result, error) -> {
+            if (error != null) {
+                log.error("Error import movement account for customer {} and months {} and year {}",
+                        customers.getId(), months, year, error);
+            } else {
+                log.info("Completed import movement account for customer {} and months {} and year {}",
+                        customers.getId(), months, year);
+            }
+        });
 
     }
 
