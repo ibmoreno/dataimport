@@ -57,7 +57,7 @@ class CustomersServiceImpl implements CustomersService {
     @Override
     public Customers update(Integer id, UpdateCustomersRequest updateCustomersRequest) {
         Customers customers = customersGateway.getOne(id)
-                .map(c -> updateCustomersRequest.toDomain(c.getId()))
+                .map(updateCustomersRequest::toDomain)
                 .orElseThrow(() -> new NotFoundException("Customer not found"));
         return customersGateway.save(customers);
     }

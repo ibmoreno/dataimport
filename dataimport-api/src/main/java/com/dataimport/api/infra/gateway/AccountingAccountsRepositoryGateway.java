@@ -2,6 +2,7 @@ package com.dataimport.api.infra.gateway;
 
 import com.dataimport.api.application.gateway.AccountingAccountsGateway;
 import com.dataimport.api.domain.AccountingAccounts;
+import com.dataimport.api.domain.AggregateAccount;
 import com.dataimport.api.domain.Status;
 import com.dataimport.api.infra.database.jpa.entity.AccountingAccountsEntity;
 import com.dataimport.api.infra.database.jpa.entity.AccountingAccountsEntity_;
@@ -30,8 +31,9 @@ public class AccountingAccountsRepositoryGateway implements AccountingAccountsGa
     }
 
     @Override
-    public List<AccountingAccounts> findAllByAggregateAccountId(Integer accountingAccountsId) {
-        return accountingAccountsRepository.findAllByAggregateAccountId(accountingAccountsId)
+    public List<AccountingAccounts> findAllByAggregateAccount(AggregateAccount aggregateAccount) {
+        AccountingAccountsEntity accountingAccountsAggregator = accountingAccountsRepository.getReferenceById(aggregateAccount.getId());
+        return accountingAccountsRepository.findAllByAggregateAccount(accountingAccountsAggregator)
                 .stream()
                 .map(AccountingAccountsEntity::toDomain).toList();
     }

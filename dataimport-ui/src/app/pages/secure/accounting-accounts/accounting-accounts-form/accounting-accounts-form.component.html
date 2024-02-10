@@ -41,14 +41,22 @@
             <div layout="row" layout-xs="column" layout-margin>
                 <mat-form-field flex appearance="outline">
                     <mat-label>Conta aggregadora</mat-label>
-                    <input matInput class="form-control" placeholder="Conta agregadora" formControlName="aggregateAccountId" maxlength="100"/>
+                    <input matInput type="text" class="form-control" placeholder="Conta agregadora" [matAutocomplete]="aggregators" formControlName="aggregateAccount" maxlength="100"/>
+                    <mat-icon matSuffix>search</mat-icon>
+                    <mat-autocomplete autoActiveFirstOption #aggregators="matAutocomplete" [displayWith]="displayFn">
+                        <mat-option [value]="">-- Nenhuma conta informada -- </mat-option>
+                        <mat-option *ngFor="let aggregator of aggregateAccountsList" [value]="aggregator" >
+                            {{aggregator.description}}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-hint [align]="'end'">pesquisar a conta para agregar</mat-hint>
                     <mat-error>
-                        <app-message-error [form-control]="resourceForm.get('aggregateAccountId')"></app-message-error>
+                        <app-message-error [form-control]="resourceForm.get('aggregateAccount')"></app-message-error>
                     </mat-error>
                 </mat-form-field>
             </div>
                 
-            <p class="mat-body-2">Controle do Sistema:</p>
+            <p class="mat-body-2">Controle do Sistema:</p>  
             <div layout="row" layout-xs="column" layout-margin>
                 <mat-form-field flex appearance="outline">
                     <mat-label>Data de Cadastro</mat-label>
@@ -68,7 +76,7 @@
 
         <mat-divider></mat-divider>
 
-        <mat-card-actions flex align="end">
+        <mat-card-actions flex [align]="'end'">
 
             @if (actionSystem.isView()) {
                 <button mat-button type="button" class="text-upper" [routerLink]="[ '/accounting-accounts' ]">Fechar</button>

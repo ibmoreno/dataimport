@@ -2,6 +2,7 @@ package com.dataimport.api.application.service;
 
 import com.dataimport.api.application.gateway.AccountingAccountsGateway;
 import com.dataimport.api.domain.AccountingAccounts;
+import com.dataimport.api.domain.AggregateAccount;
 import com.dataimport.api.exception.NotFoundException;
 import com.dataimport.api.infra.controller.dto.accounting_accounts.NewAccountingAccountsRequest;
 import com.dataimport.api.infra.controller.dto.accounting_accounts.UpdateAccountingAccountsRequest;
@@ -53,7 +54,7 @@ class AccountingAccountsServiceImpl implements AccountingAccountsService {
     @Override
     public AccountingAccounts update(Integer id, UpdateAccountingAccountsRequest updateAccountingAccountsRequest) {
         AccountingAccounts accountingAccounts = accountingAccountsGateway.getOne(id)
-                .map(a -> updateAccountingAccountsRequest.toDomain(a.getId()))
+                .map(updateAccountingAccountsRequest::toDomain)
                 .orElseThrow(() -> new NotFoundException("Accounting Accounts not found"));
         return accountingAccountsGateway.save(accountingAccounts);
     }
@@ -63,7 +64,11 @@ class AccountingAccountsServiceImpl implements AccountingAccountsService {
     public void delete(Integer id) {
         AccountingAccounts accountingAccounts = this.getOne(id);
         List<AccountingAccounts> accountingAccountsAggregateIds =
-                accountingAccountsGateway.findAllByAggregateAccountId(accountingAccounts.getId());
+                accountingAccountsGateway.findAllByAggregateAccount(
+                        AggregateAccount.builder()
+                                .id(accountingAccounts.getId())
+                                .description(accountingAccounts.getDescription())
+                                .build());
 
         if (!accountingAccountsAggregateIds.isEmpty()) {
             accountingAccountsAggregateIds.forEach(AccountingAccounts::removeAggregateAccount);

@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface AccountingAccountsRepository extends JpaRepository<AccountingAccountsEntity, Integer>,
         JpaSpecificationExecutor<AccountingAccountsEntity> {
     List<AccountingAccountsEntity> findAllByStatus(Status status);
-    List<AccountingAccountsEntity> findAllByAggregateAccountId(Integer accountingAccountsId);
+    List<AccountingAccountsEntity> findAllByAggregateAccount(AccountingAccountsEntity accountingAccountsEntity);
 }

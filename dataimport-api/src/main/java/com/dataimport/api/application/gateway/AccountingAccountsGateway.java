@@ -1,6 +1,7 @@
 package com.dataimport.api.application.gateway;
 
 import com.dataimport.api.domain.AccountingAccounts;
+import com.dataimport.api.domain.AggregateAccount;
 import com.dataimport.api.domain.Status;
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 public interface AccountingAccountsGateway {
     List<AccountingAccounts> findAllByStatus(Status status);
 
-    List<AccountingAccounts> findAllByAggregateAccountId(Integer accountingAccountsId);
+    List<AccountingAccounts> findAllByAggregateAccount(AggregateAccount aggregateAccount);
 
     Page<AccountingAccounts> findAll(Pageable pageable);
 

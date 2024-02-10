@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -28,14 +30,16 @@ class CustomersController {
     private final CustomersService customersService;
 
     @GetMapping
-    public ResponseEntity<Page<CustomersResponse>> getAll(Pageable pageable) {
+    public ResponseEntity<Page<CustomersResponse>> getAll(
+            @SortDefault(sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
         Page<CustomersResponse> customers = customersService.getAll(pageable).map(Customers::toResponse);
         return ResponseEntity.ok().body(customers);
     }
 
     @GetMapping("/search")
     public ResponseEntity<Page<CustomersResponse>> search(
-            @RequestParam(value = "search", required = false) String search, Pageable pageable) {
+            @RequestParam(value = "search", required = false) String search,
+            @SortDefault(sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
         Page<CustomersResponse> customers = customersService.search(search, pageable).map(Customers::toResponse);
         return ResponseEntity.ok().body(customers);
     }

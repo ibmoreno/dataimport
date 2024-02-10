@@ -40,45 +40,45 @@ class ImportDataToBalanceSheetImpl implements ImportDataToBalanceSheet {
 
         CompletableFuture.runAsync(() -> {
 
-                    log.info("Importing movement account for customer {} and months {} and year {}",
-                            customers.getId(), months, year);
+            log.info("Importing movement account for customer {} and months {} and year {}",
+                    customers.getId(), months, year);
 
-                    List<AccountingAccounts> accounts = accountingAccountsGateway.findAllByStatus(Status.A);
-                    if (accounts.isEmpty()) {
-                        return;
-                    }
+            List<AccountingAccounts> accounts = accountingAccountsGateway.findAllByStatus(Status.A);
+            if (accounts.isEmpty()) {
+                return;
+            }
 
-                    MatchData filter = MatchData.builder()
-                            .year(year)
-                            .months(months)
-                            .accounts(new HashSet<>(accounts))
-                            .build();
+            MatchData filter = MatchData.builder()
+                    .year(year)
+                    .months(months)
+                    .accounts(new HashSet<>(accounts))
+                    .build();
 
-                    List<DataOutput> accountImports = strategyReadFile.getReadFile(customers.getReadModelVersion())
-                            .execute(file, filter);
+            List<DataOutput> accountImports = strategyReadFile.getReadFile(customers.getReadModelVersion())
+                    .execute(file, filter);
 
-                    List<BalanceSheet> balanceSheetEntities = accountImports.stream().map(account ->
-                            BalanceSheet.builder()
-                                    .customersId(customers.getId())
-                                    .accountingAccountsId(account.getAccountingAccountsId())
-                                    .monthYear(account.getMonthYear())
-                                    .costValue(account.getValue())
-                                    .createdAt(LocalDateTime.now())
-                                    .updatedAt(LocalDateTime.now())
-                                    .build()
-                    ).toList();
+            List<BalanceSheet> balanceSheetEntities = accountImports.stream().map(account ->
+                    BalanceSheet.builder()
+                            .customersId(customers.getId())
+                            .accountingAccountsId(account.getAccountingAccountsId())
+                            .monthYear(account.getMonthYear())
+                            .costValue(account.getValue())
+                            .createdAt(LocalDateTime.now())
+                            .updatedAt(LocalDateTime.now())
+                            .build()
+            ).toList();
 
-                    balanceSheetGateway.saveAll(balanceSheetEntities);
+            balanceSheetGateway.saveAll(balanceSheetEntities);
 
-                }, forkJoinPool).exceptionally(exception -> {
-                    log.error("Error import movement account for customer {} and months {} and year {}",
-                            customers.getId(), months, year, exception);
-                    return null;
-                })
-                .thenAcceptAsync(result ->
-                        log.info("Complete import movement account for customer {} and months {} and year {}",
-                                customers.getId(), months, year)
-                );
+        }, forkJoinPool).whenCompleteAsync((result, error) -> {
+            if (error != null) {
+                log.error("Error import movement account for customer {} and months {} and year {}",
+                        customers.getId(), months, year, error);
+            } else {
+                log.info("Completed import movement account for customer {} and months {} and year {}",
+                        customers.getId(), months, year);
+            }
+        });
 
     }
 

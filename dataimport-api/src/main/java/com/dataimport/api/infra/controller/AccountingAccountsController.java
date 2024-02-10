@@ -10,6 +10,8 @@ import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,7 +34,8 @@ public class AccountingAccountsController {
 
 
     @GetMapping
-    public ResponseEntity<Page<AccountingAccountsResponse>> getAll(Pageable pageable) {
+    public ResponseEntity<Page<AccountingAccountsResponse>> getAll(
+            @SortDefault(sort = "description", direction = Sort.Direction.ASC) Pageable pageable) {
         Page<AccountingAccountsResponse> customers = accountingAccountsService
                 .getAll(pageable).map(AccountingAccounts::toResponse);
         return ResponseEntity.ok().body(customers);
@@ -40,7 +43,8 @@ public class AccountingAccountsController {
 
     @GetMapping("/search")
     public ResponseEntity<Page<AccountingAccountsResponse>> search(
-            @RequestParam(value = "search", required = false) String search, Pageable pageable) {
+            @RequestParam(value = "search", required = false) String search,
+            @SortDefault(sort = "description", direction = Sort.Direction.ASC) Pageable pageable) {
         Page<AccountingAccountsResponse> customers = accountingAccountsService
                 .search(search, pageable).map(AccountingAccounts::toResponse);
         return ResponseEntity.ok().body(customers);

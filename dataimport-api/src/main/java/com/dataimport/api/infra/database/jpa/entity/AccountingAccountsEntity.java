@@ -1,6 +1,7 @@
 package com.dataimport.api.infra.database.jpa.entity;
 
 import com.dataimport.api.domain.AccountingAccounts;
+import com.dataimport.api.domain.AggregateAccount;
 import com.dataimport.api.domain.Status;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -26,8 +27,9 @@ public class AccountingAccountsEntity {
     private Integer id;
     @Column(name = "description", nullable = false)
     private String description;
-    @Column(name = "aggregate_account_id")
-    private Integer aggregateAccountId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "aggregate_account_id")
+    private AccountingAccountsEntity aggregateAccount;
     @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
@@ -52,10 +54,20 @@ public class AccountingAccountsEntity {
         return AccountingAccounts.builder()
                 .id(id)
                 .description(description)
-                .aggregateAccountId(aggregateAccountId)
+                .aggregateAccount(this.toDomainAggregateAccount())
                 .active(Status.A.equals(status))
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
+                .build();
+    }
+
+    private AggregateAccount toDomainAggregateAccount() {
+        if (this.aggregateAccount == null) {
+            return null;
+        }
+        return AggregateAccount.builder()
+                .id(aggregateAccount.getId())
+                .description(aggregateAccount.getDescription())
                 .build();
     }
 

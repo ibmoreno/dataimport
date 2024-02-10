@@ -1,4 +1,5 @@
 import { BaseEntity } from "@app/core/models/base-entity.model";
+import { AggregatorAccounts } from "./aggregator-accounts.model";
 
 export class AccountingAccounts extends BaseEntity {
 
@@ -12,7 +13,7 @@ export class AccountingAccounts extends BaseEntity {
 
     constructor(
         public description?: string,
-        public aggregateAccountId?: number,
+        public aggregateAccount?: AggregatorAccounts,
         public active: boolean = true,
         public createdAt?: Date,
         public updatedAt?: Date,                    
