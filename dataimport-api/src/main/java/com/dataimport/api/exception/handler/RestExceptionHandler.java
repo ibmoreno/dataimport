@@ -2,6 +2,7 @@ package com.dataimport.api.exception.handler;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -30,6 +31,16 @@ public class RestExceptionHandler implements ProblemHandling {
 
         ThrowableProblem problem = createThrowableProblem("Invalid argument",
                 Status.BAD_REQUEST, ex.getMessage());
+        return handleProblem(problem, request);
+
+    }
+
+    @ExceptionHandler({InsufficientAuthenticationException.class})
+    public ResponseEntity<Problem> handleInsufficientAuthenticationException(InsufficientAuthenticationException ex,
+                                                                             NativeWebRequest request) {
+
+        ThrowableProblem problem = createThrowableProblem("Unauthorized",
+                Status.UNAUTHORIZED, ex.getMessage());
         return handleProblem(problem, request);
 
     }

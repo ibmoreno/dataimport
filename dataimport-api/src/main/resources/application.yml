@@ -15,6 +15,12 @@ spring:
     username: ${JDBC_POSTGRES_USER:user_import}
     password: ${JDBC_POSTGRES_PASSWORD:user_import}
 
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: ${OAUTH2_ISSUER_URI:http://kubernetes.docker.internal:8180/realms/dataimport}
+
   jpa:
     hibernate:
       ddl-auto: none

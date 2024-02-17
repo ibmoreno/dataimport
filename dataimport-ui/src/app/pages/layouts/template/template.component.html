@@ -4,14 +4,19 @@
         avatar="assets/icons/profile-user-icon.svg" 
         flex 
         sidenavTitle="dataimport." 
-        name="User System"
-        email="user@domain.com.br" 
+        name="{{userProfile?.firstName}} {{userProfile?.lastName}}"
+        email="{{userProfile?.email}}"
         navigationRoute="/home">
 
         <div td-navigation-drawer-menu>
             <mat-nav-list>
-                <mat-list-item tdLayoutClose>
-                    <mat-icon matListItemIcon>account_box</mat-icon>Gerenciar Conta
+                @if (isAdmin) {
+                    <mat-list-item tdLayoutClose (click)="openAdminConsole()">
+                        <mat-icon matListItemIcon>manage_accounts</mat-icon>Gerenciar Contas
+                    </mat-list-item>
+                }
+                <mat-list-item tdLayoutClose (click)="openAccountManager()">
+                    <mat-icon matListItemIcon>account_box</mat-icon>Seu Perfil
                 </mat-list-item>
             </mat-nav-list>
         </div>
@@ -25,14 +30,14 @@
             <mat-list-item routerLink="/customers" routerLinkActive="active" tdLayoutClose>
                 <mat-icon matListItemIcon>groups</mat-icon>Clientes
             </mat-list-item>
-            <mat-list-item routerLink="/home" tdLayoutClose>
+            <mat-list-item (click)="logout()" tdLayoutClose>
                 <mat-icon matListItemIcon>logout</mat-icon>Sair
             </mat-list-item>
         </mat-nav-list>
     </td-navigation-drawer>
  
     <div td-sidenav-content class="td-layout-footer pad">
-        <span class="mat-caption">versão 1.0.0</span>
+        <span class="mat-caption">versão 1.0.1</span>
     </div>
 
     <td-layout-nav logo="assets:dataimport-logo" toolbarTitle="DATAIMPORT - controle interno />" navigationRoute="/">
@@ -42,8 +47,8 @@
         </button>
 
         <div td-toolbar-content layout="row" layout-align="end center" flex>
-            <button class="overflow-visible" mat-icon-button
-                matTooltip="Sair do Data Import" routerLink="/home">
+            <button class="overflow-visible" mat-icon-button (click)="logout()"
+                matTooltip="Sair do Data Import">
                 <mat-icon>logout</mat-icon>
             </button>
         </div>
