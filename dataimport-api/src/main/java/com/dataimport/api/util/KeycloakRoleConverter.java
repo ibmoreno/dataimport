@@ -29,7 +29,9 @@ public class KeycloakRoleConverter implements Converter<Jwt, Collection<GrantedA
         Map<String, List<String>> backendRoles = resourceAccess.getOrDefault(CLAIM_ROLES, emptyMap());
 
         return backendRoles.getOrDefault("roles", emptyList()).stream()
-                .map(role -> new SimpleGrantedAuthority(PREFIX_RESOURCE_ROLE + role))
+                .map(String::toUpperCase)
+                .map(role -> PREFIX_RESOURCE_ROLE + role)
+                .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
     }
