@@ -32,7 +32,6 @@ public class AccountingAccountsController {
 
     private final AccountingAccountsService accountingAccountsService;
 
-
     @GetMapping
     public ResponseEntity<Page<AccountingAccountsResponse>> getAll(
             @SortDefault(sort = "description", direction = Sort.Direction.ASC) Pageable pageable) {
