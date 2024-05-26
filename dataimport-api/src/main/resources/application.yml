@@ -19,7 +19,7 @@ spring:
     oauth2:
       resource-server:
         jwt:
-          issuer-uri: ${OAUTH2_ISSUER_URI:http://kubernetes.docker.internal.org:8180/realms/dataimport}
+          issuer-uri: ${OAUTH2_ISSUER_URI:http://kubernetes.docker.internal.io:8180/realms/dataimport}
 
   jpa:
     hibernate:
