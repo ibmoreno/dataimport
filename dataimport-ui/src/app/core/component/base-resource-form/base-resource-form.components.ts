@@ -1,4 +1,4 @@
-import { Injector, OnInit, ViewContainerRef, Directive, Component } from '@angular/core';
+import { Injector, OnInit, ViewContainerRef, Directive } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IBaseFormDeactivateResolve } from '@app/core/resolver/ibase-form-deactivate.resolve';

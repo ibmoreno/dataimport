@@ -20,13 +20,21 @@ export class CustomersService extends BaseResourceService<Customers> {
    }
 
    uploadFile(customerId: number, year: number, months: number[], file: File): Observable<any> {
-    console.log(file);
     const formData = new FormData(); 
     const url = `${this.apiPath}/${customerId}/import/${year}`
     formData.append('file', file, file?.name);
      return this.http.post(url, formData, { 
       reportProgress: true, 
       observe: 'events', 
+      params: {
+        months: months
+      }
+    })
+   }
+
+   deleteMoviments(customerId: number, year: number, months: number[]): Observable<any> {
+    const url = `${this.apiPath}/${customerId}/delete/${year}`
+    return this.http.delete(url, { 
       params: {
         months: months
       }

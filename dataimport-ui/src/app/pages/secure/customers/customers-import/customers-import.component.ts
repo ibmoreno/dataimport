@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Injector, ViewContainerRef } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
@@ -18,6 +18,8 @@ import { HttpEventType } from '@angular/common/http';
 import { FormFieldErrorComponent } from "@core/component/form-field-error/form-field-error.component";
 import { NoBlank } from '@app/core/validator/CustomValidators';
 import { ToastrService } from 'ngx-toastr';
+import { CovalentDialogsModule, TdDialogService } from '@covalent/core/dialogs';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
     selector: 'app-customers-import',
@@ -26,6 +28,7 @@ import { ToastrService } from 'ngx-toastr';
     styleUrl: './customers-import.component.scss',
     imports: [
         CommonModule,
+        CovalentDialogsModule,
         CovalentFileModule,
         CovalentLayoutModule,
         RouterModule,
@@ -38,12 +41,15 @@ import { ToastrService } from 'ngx-toastr';
         MatProgressBarModule,
         MatDividerModule, 
         MatButtonModule,
+        MatTooltipModule,
         FormFieldErrorComponent,
     ]
 })
 export class CustomersImportComponent {
 
   protected customers: Customers = new Customers();
+  protected viewContainerRef: ViewContainerRef;
+  protected dialogService: TdDialogService;
   protected submittingForm: boolean = false;
   protected resourceForm: FormGroup;
   protected uploadProgress: number = 0;
@@ -55,7 +61,10 @@ export class CustomersImportComponent {
     protected toastr: ToastrService,
     protected router: Router,
     protected customerService: CustomersService,
+    protected injector: Injector,
   ) {
+    this.dialogService = injector.get(TdDialogService);
+    this.viewContainerRef = injector.get(ViewContainerRef);
     this.customers = this.route.snapshot.data['resolverData'];
     this.title = 'IMPORTAR PLANILHA - ' + this.customers.name;
     this.resourceForm = formBuilder.group({
@@ -103,5 +112,35 @@ export class CustomersImportComponent {
   compareMonths = (o1: any, o2: any) => {
     return o1 == o2;
   }
+
+
+  delete(): void {
+
+    this.dialogService.openConfirm({
+        title: 'Confirmar',
+        message: `Confirma exclusão dos movimentos importados dos mes(es): ${this.resourceForm.value.months}, do ano de ${this.resourceForm.value.year}?`,
+        cancelButton: 'NÃO',
+        acceptButton: 'SIM',
+        width: '430px',
+        viewContainerRef: this.viewContainerRef,
+    }).afterClosed().subscribe((accept: boolean) => {
+
+        if (accept) {
+          this.customerService.deleteMoviments(this.customers.id, this.resourceForm.value.year, this.resourceForm.value.months).subscribe({
+            complete: () => {
+              this.submittingForm = false;
+              this.toastr.success('Movimentos removido com sucesso!');
+              this.router.navigateByUrl('/customers');
+            },
+            error: (error: any) => {
+              this.submittingForm = false;
+              throw new Error(error);
+            },
+          })
+        }
+    });
+
+}
+
 
 }
