@@ -18,7 +18,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -78,6 +86,16 @@ class CustomersController {
         customersService.importMovementAccount(customerId, year, months, UploadFileHelper.isValidFile(file));
         return ResponseEntity.ok(Map.of("message", "File uploaded successfully"));
 
+    }
+
+    @DeleteMapping("/{customerId}/delete/{year}")
+    public ResponseEntity<Map<String, String>> deleteMovementAccount(@PathVariable Integer customerId,
+                                                                     @PathVariable Integer year,
+                                                                     @RequestParam @Valid List<@Range(min = 1, max = 12,
+                                                                             message = "Mes inválido") Integer> months) {
+
+        customersService.deleteMovementAccount(customerId, year, months);
+        return ResponseEntity.ok(Map.of("message", "Movement account deleted successfully"));
     }
 
 }

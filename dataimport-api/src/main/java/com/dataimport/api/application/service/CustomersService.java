@@ -1,12 +1,14 @@
 package com.dataimport.api.application.service;
 
 import com.dataimport.api.application.gateway.CustomersGateway;
+import com.dataimport.api.application.gateway.DeleteMovementAccountGateway;
 import com.dataimport.api.application.usecase.balance_sheet.importdata.ImportDataToBalanceSheet;
 import com.dataimport.api.domain.Customers;
 import com.dataimport.api.exception.NotFoundException;
 import com.dataimport.api.infra.controller.dto.customers.NewCustomersRequest;
 import com.dataimport.api.infra.controller.dto.customers.UpdateCustomersRequest;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,6 +30,8 @@ public interface CustomersService {
 
     void importMovementAccount(Integer customerId, Integer year, List<Integer> months, InputStream file);
 
+    void deleteMovementAccount(Integer customerId, Integer year, List<Integer> months);
+
 }
 
 @Service
@@ -36,6 +40,7 @@ class CustomersServiceImpl implements CustomersService {
 
     private final CustomersGateway customersGateway;
     private final ImportDataToBalanceSheet importDataToBalanceSheet;
+    private final DeleteMovementAccountGateway deleteMovementAccountGateway;
 
     @Override
     public Page<Customers> getAll(Pageable pageable) {
@@ -78,6 +83,12 @@ class CustomersServiceImpl implements CustomersService {
     public void importMovementAccount(Integer customerId, Integer year, List<Integer> months, InputStream file) {
         Customers customers = this.getOne(customerId);
         importDataToBalanceSheet.execute(customers, year, months, file);
+    }
+
+    @Override
+    public void deleteMovementAccount(Integer customerId, Integer year, List<Integer> months) {
+        List<LocalDate> monthYear = months.stream().map(month -> LocalDate.of(year, month, 1)).toList();
+        deleteMovementAccountGateway.execute(customerId, monthYear);
     }
 
 }
